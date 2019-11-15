@@ -1,123 +1,202 @@
 <?xml version="1.0" encoding="utf-8"?>
 <database name="ftb" defaultIdMethod="native" defaultPhpNamingMethod="underscore">
-  <table name="catentcls" idMethod="native" phpName="Catentcls">
-    <column name="idnentcls" phpName="Idnentcls" type="BIGINT" sqlType="bigint(20) unsigned" primaryKey="true" autoIncrement="true" required="true"/>
-    <column name="dscentcls" phpName="Dscentcls" type="VARCHAR" size="191" required="true"/>
-    <column name="created_at" phpName="CreatedAt" type="TIMESTAMP"/>
-    <column name="updated_at" phpName="UpdatedAt" type="TIMESTAMP"/>
-    <vendor type="mysql">
-      <parameter name="Engine" value="InnoDB"/>
-    </vendor>
-  </table>
-  <table name="catentqul" idMethod="native" phpName="Catentqul">
-    <column name="idnentqul" phpName="Idnentqul" type="BIGINT" sqlType="bigint(20) unsigned" primaryKey="true" autoIncrement="true" required="true"/>
-    <column name="dscentqul" phpName="Dscentqul" type="VARCHAR" size="191" required="true"/>
-    <column name="created_at" phpName="CreatedAt" type="TIMESTAMP"/>
-    <column name="updated_at" phpName="UpdatedAt" type="TIMESTAMP"/>
-    <vendor type="mysql">
-      <parameter name="Engine" value="InnoDB"/>
-    </vendor>
-  </table>
-  <table name="catentuni" idMethod="native" phpName="Catentuni">
-    <column name="idnentuni" phpName="Idnentuni" type="BIGINT" sqlType="bigint(20) unsigned" primaryKey="true" autoIncrement="true" required="true"/>
-    <column name="dscentuni" phpName="Dscentuni" type="VARCHAR" size="191" required="true"/>
-    <column name="created_at" phpName="CreatedAt" type="TIMESTAMP"/>
-    <column name="updated_at" phpName="UpdatedAt" type="TIMESTAMP"/>
-    <vendor type="mysql">
-      <parameter name="Engine" value="InnoDB"/>
-    </vendor>
-  </table>
-  <table name="failed_jobs" idMethod="native" phpName="FailedJobs">
-    <column name="id" phpName="Id" type="BIGINT" sqlType="bigint(20) unsigned" primaryKey="true" autoIncrement="true" required="true"/>
-    <column name="connection" phpName="Connection" type="LONGVARCHAR" required="true"/>
-    <column name="queue" phpName="Queue" type="LONGVARCHAR" required="true"/>
-    <column name="payload" phpName="Payload" type="CLOB" required="true"/>
-    <column name="exception" phpName="Exception" type="CLOB" required="true"/>
-    <column name="failed_at" phpName="FailedAt" type="TIMESTAMP" required="true" defaultExpr="CURRENT_TIMESTAMP"/>
-    <vendor type="mysql">
-      <parameter name="Engine" value="InnoDB"/>
-    </vendor>
-  </table>
-  <table name="migrations" idMethod="native" phpName="Migrations">
-    <column name="id" phpName="Id" type="INTEGER" size="10" sqlType="int(10) unsigned" primaryKey="true" autoIncrement="true" required="true"/>
-    <column name="migration" phpName="Migration" type="VARCHAR" size="255" required="true"/>
-    <column name="batch" phpName="Batch" type="INTEGER" required="true"/>
-    <vendor type="mysql">
-      <parameter name="Engine" value="InnoDB"/>
-    </vendor>
-  </table>
-  <table name="password_resets" idMethod="native" phpName="PasswordResets">
-    <column name="email" phpName="Email" type="VARCHAR" size="191" required="true"/>
-    <column name="token" phpName="Token" type="VARCHAR" size="191" required="true"/>
-    <column name="created_at" phpName="CreatedAt" type="TIMESTAMP"/>
-    <index name="password_resets_email_index">
-      <index-column name="email"/>
-    </index>
-    <vendor type="mysql">
-      <parameter name="Engine" value="InnoDB"/>
-    </vendor>
-  </table>
-  <table name="tblentprd" idMethod="native" phpName="Tblentprd">
-    <column name="idnentprd" phpName="Idnentprd" type="BIGINT" sqlType="bigint(20) unsigned" primaryKey="true" autoIncrement="true" required="true"/>
-    <column name="idnentcls" phpName="Idnentcls" type="BIGINT" sqlType="bigint(20) unsigned" required="true"/>
-    <column name="idnentqul" phpName="Idnentqul" type="BIGINT" sqlType="bigint(20) unsigned" required="true"/>
-    <column name="idnentuni" phpName="Idnentuni" type="BIGINT" sqlType="bigint(20) unsigned" required="true"/>
-    <column name="userid" phpName="Userid" type="BIGINT" sqlType="bigint(20) unsigned" required="true"/>
-    <column name="namentprd" phpName="Namentprd" type="VARCHAR" size="191" required="true"/>
-    <column name="dscentprd" phpName="Dscentprd" type="VARCHAR" size="191" required="true"/>
-    <column name="qunentprd" phpName="Qunentprd" type="DECIMAL" size="8" scale="2" required="true"/>
-    <column name="created_at" phpName="CreatedAt" type="TIMESTAMP"/>
-    <column name="updated_at" phpName="UpdatedAt" type="TIMESTAMP"/>
-    <foreign-key foreignTable="catentcls" name="tblentprd_idnentcls_foreign">
-      <reference local="idnentcls" foreign="idnentcls"/>
-    </foreign-key>
-    <foreign-key foreignTable="catentqul" name="tblentprd_idnentqul_foreign">
-      <reference local="idnentqul" foreign="idnentqul"/>
-    </foreign-key>
-    <foreign-key foreignTable="catentuni" name="tblentprd_idnentuni_foreign">
-      <reference local="idnentuni" foreign="idnentuni"/>
-    </foreign-key>
-    <foreign-key foreignTable="users" name="tblentprd_userid_foreign">
-      <reference local="userid" foreign="id"/>
-    </foreign-key>
-    <index name="tblentprd_idnentcls_foreign">
-      <index-column name="idnentcls"/>
-    </index>
-    <index name="tblentprd_idnentqul_foreign">
-      <index-column name="idnentqul"/>
-    </index>
-    <index name="tblentprd_idnentuni_foreign">
-      <index-column name="idnentuni"/>
-    </index>
-    <index name="tblentprd_userid_foreign">
-      <index-column name="userid"/>
-    </index>
-    <vendor type="mysql">
-      <parameter name="Engine" value="InnoDB"/>
-    </vendor>
-  </table>
-  <table name="tblprdpic" idMethod="native" phpName="Tblprdpic">
-    <column name="id" phpName="Id" type="BIGINT" sqlType="bigint(20) unsigned" primaryKey="true" autoIncrement="true" required="true"/>
-    <column name="created_at" phpName="CreatedAt" type="TIMESTAMP"/>
-    <column name="updated_at" phpName="UpdatedAt" type="TIMESTAMP"/>
-    <vendor type="mysql">
-      <parameter name="Engine" value="InnoDB"/>
-    </vendor>
-  </table>
-  <table name="users" idMethod="native" phpName="Users">
-    <column name="id" phpName="Id" type="BIGINT" sqlType="bigint(20) unsigned" primaryKey="true" autoIncrement="true" required="true"/>
-    <column name="name" phpName="Name" type="VARCHAR" size="191" required="true"/>
-    <column name="email" phpName="Email" type="VARCHAR" size="191" required="true"/>
-    <column name="email_verified_at" phpName="EmailVerifiedAt" type="TIMESTAMP"/>
-    <column name="password" phpName="Password" type="VARCHAR" size="191" required="true"/>
-    <column name="remember_token" phpName="RememberToken" type="VARCHAR" size="100"/>
-    <column name="created_at" phpName="CreatedAt" type="TIMESTAMP"/>
-    <column name="updated_at" phpName="UpdatedAt" type="TIMESTAMP"/>
-    <unique name="users_email_unique">
-      <unique-column name="email"/>
-    </unique>
-    <vendor type="mysql">
-      <parameter name="Engine" value="InnoDB"/>
-    </vendor>
-  </table>
+    <table name="catentcls" idMethod="native" phpName="Catentcls">
+        <column name="idnentcls" phpName="Idnentcls" type="BIGINT" sqlType="bigint(20) unsigned" primaryKey="true" autoIncrement="true" required="true"/>
+        <column name="dscentcls" phpName="Dscentcls" type="VARCHAR" size="191" required="true"/>
+        <column name="created_at" phpName="CreatedAt" type="TIMESTAMP"/>
+        <column name="updated_at" phpName="UpdatedAt" type="TIMESTAMP"/>
+        <vendor type="mysql">
+            <parameter name="Engine" value="InnoDB"/>
+        </vendor>
+    </table>
+    <table name="catentqul" idMethod="native" phpName="Catentqul">
+        <column name="idnentqul" phpName="Idnentqul" type="BIGINT" sqlType="bigint(20) unsigned" primaryKey="true" autoIncrement="true" required="true"/>
+        <column name="dscentqul" phpName="Dscentqul" type="VARCHAR" size="191" required="true"/>
+        <column name="created_at" phpName="CreatedAt" type="TIMESTAMP"/>
+        <column name="updated_at" phpName="UpdatedAt" type="TIMESTAMP"/>
+        <vendor type="mysql">
+            <parameter name="Engine" value="InnoDB"/>
+        </vendor>
+    </table>
+    <table name="catentuni" idMethod="native" phpName="Catentuni">
+        <column name="idnentuni" phpName="Idnentuni" type="BIGINT" sqlType="bigint(20) unsigned" primaryKey="true" autoIncrement="true" required="true"/>
+        <column name="dscentuni" phpName="Dscentuni" type="VARCHAR" size="191" required="true"/>
+        <column name="created_at" phpName="CreatedAt" type="TIMESTAMP"/>
+        <column name="updated_at" phpName="UpdatedAt" type="TIMESTAMP"/>
+        <vendor type="mysql">
+            <parameter name="Engine" value="InnoDB"/>
+        </vendor>
+    </table>
+    <table name="failed_jobs" idMethod="native" phpName="FailedJobs">
+        <column name="id" phpName="Id" type="BIGINT" sqlType="bigint(20) unsigned" primaryKey="true" autoIncrement="true" required="true"/>
+        <column name="connection" phpName="Connection" type="LONGVARCHAR" required="true"/>
+        <column name="queue" phpName="Queue" type="LONGVARCHAR" required="true"/>
+        <column name="payload" phpName="Payload" type="CLOB" required="true"/>
+        <column name="exception" phpName="Exception" type="CLOB" required="true"/>
+        <column name="failed_at" phpName="FailedAt" type="TIMESTAMP" required="true" defaultExpr="CURRENT_TIMESTAMP"/>
+        <vendor type="mysql">
+            <parameter name="Engine" value="InnoDB"/>
+        </vendor>
+    </table>
+    <table name="migrations" idMethod="native" phpName="Migrations">
+        <column name="id" phpName="Id" type="INTEGER" size="10" sqlType="int(10) unsigned" primaryKey="true" autoIncrement="true" required="true"/>
+        <column name="migration" phpName="Migration" type="VARCHAR" size="255" required="true"/>
+        <column name="batch" phpName="Batch" type="INTEGER" required="true"/>
+        <vendor type="mysql">
+            <parameter name="Engine" value="InnoDB"/>
+        </vendor>
+    </table>
+    <table name="password_resets" idMethod="native" phpName="PasswordResets">
+        <column name="email" phpName="Email" type="VARCHAR" size="191" required="true"/>
+        <column name="token" phpName="Token" type="VARCHAR" size="191" required="true"/>
+        <column name="created_at" phpName="CreatedAt" type="TIMESTAMP"/>
+        <index name="password_resets_email_index">
+            <index-column name="email"/>
+        </index>
+        <vendor type="mysql">
+            <parameter name="Engine" value="InnoDB"/>
+        </vendor>
+    </table>
+    <table name="tblentauc" idMethod="native" phpName="Tblentauc">
+        <column name="idnentauc" phpName="Idnentauc" type="BIGINT" sqlType="bigint(20) unsigned" primaryKey="true" autoIncrement="true" required="true"/>
+        <column name="idnentprd" phpName="Idnentprd" type="BIGINT" sqlType="bigint(20) unsigned" required="true"/>
+        <column name="datstrauc" phpName="Datstrauc" type="TIMESTAMP" required="true" defaultExpr="CURRENT_TIMESTAMP"/>
+        <column name="datendauc" phpName="Datendauc" type="TIMESTAMP" required="true" defaultValue="0000-00-00 00:00:00"/>
+        <column name="basprcauc" phpName="Basprcauc" type="DECIMAL" size="8" scale="2" required="true"/>
+        <column name="created_at" phpName="CreatedAt" type="TIMESTAMP"/>
+        <column name="updated_at" phpName="UpdatedAt" type="TIMESTAMP"/>
+        <foreign-key foreignTable="tblentprd" name="tblentauc_idnentprd_foreign">
+            <reference local="idnentprd" foreign="idnentprd"/>
+        </foreign-key>
+        <index name="tblentauc_idnentprd_foreign">
+            <index-column name="idnentprd"/>
+        </index>
+        <vendor type="mysql">
+            <parameter name="Engine" value="InnoDB"/>
+        </vendor>
+    </table>
+    <table name="tblentbid" idMethod="native" phpName="Tblentbid">
+        <column name="idnentbid" phpName="Idnentbid" type="BIGINT" sqlType="bigint(20) unsigned" primaryKey="true" autoIncrement="true" required="true"/>
+        <column name="idnentauc" phpName="Idnentauc" type="BIGINT" sqlType="bigint(20) unsigned" required="true"/>
+        <column name="usersid" phpName="Usersid" type="BIGINT" sqlType="bigint(20) unsigned" required="true"/>
+        <column name="datissbid" phpName="Datissbid" type="TIMESTAMP" required="true" defaultExpr="CURRENT_TIMESTAMP"/>
+        <column name="prcunibid" phpName="Prcunibid" type="DECIMAL" size="8" scale="2" required="true"/>
+        <column name="qununibid" phpName="Qununibid" type="DECIMAL" size="8" scale="2" required="true"/>
+        <column name="created_at" phpName="CreatedAt" type="TIMESTAMP"/>
+        <column name="updated_at" phpName="UpdatedAt" type="TIMESTAMP"/>
+        <foreign-key foreignTable="tblentauc" name="tblentbid_idnentauc_foreign">
+            <reference local="idnentauc" foreign="idnentauc"/>
+        </foreign-key>
+        <foreign-key foreignTable="users" name="tblentbid_usersid_foreign">
+            <reference local="usersid" foreign="id"/>
+        </foreign-key>
+        <index name="tblentbid_idnentauc_foreign">
+            <index-column name="idnentauc"/>
+        </index>
+        <index name="tblentbid_usersid_foreign">
+            <index-column name="usersid"/>
+        </index>
+        <vendor type="mysql">
+            <parameter name="Engine" value="InnoDB"/>
+        </vendor>
+    </table>
+    <table name="tblentcms" idMethod="native" phpName="Tblentcms">
+        <column name="idnentcms" phpName="Idnentcms" type="BIGINT" sqlType="bigint(20) unsigned" primaryKey="true" autoIncrement="true" required="true"/>
+        <column name="idnentctr" phpName="Idnentctr" type="BIGINT" sqlType="bigint(20) unsigned" required="true"/>
+        <column name="ttlentcms" phpName="Ttlentcms" type="DECIMAL" size="8" scale="2" required="true"/>
+        <column name="datsndinv" phpName="Datsndinv" type="TIMESTAMP"/>
+        <column name="datpaycms" phpName="Datpaycms" type="TIMESTAMP"/>
+        <column name="created_at" phpName="CreatedAt" type="TIMESTAMP"/>
+        <column name="updated_at" phpName="UpdatedAt" type="TIMESTAMP"/>
+        <foreign-key foreignTable="tblentctr" name="tblentcms_idnentctr_foreign">
+            <reference local="idnentctr" foreign="idnentctr"/>
+        </foreign-key>
+        <index name="tblentcms_idnentctr_foreign">
+            <index-column name="idnentctr"/>
+        </index>
+        <vendor type="mysql">
+            <parameter name="Engine" value="InnoDB"/>
+        </vendor>
+    </table>
+    <table name="tblentctr" idMethod="native" phpName="Tblentctr">
+        <column name="idnentctr" phpName="Idnentctr" type="BIGINT" sqlType="bigint(20) unsigned" primaryKey="true" autoIncrement="true" required="true"/>
+        <column name="idnentbid" phpName="Idnentbid" type="BIGINT" sqlType="bigint(20) unsigned" required="true"/>
+        <column name="ttlentctr" phpName="Ttlentctr" type="DECIMAL" size="8" scale="2" required="true"/>
+        <column name="cmsentctr" phpName="Cmsentctr" type="INTEGER" required="true"/>
+        <column name="created_at" phpName="CreatedAt" type="TIMESTAMP"/>
+        <column name="updated_at" phpName="UpdatedAt" type="TIMESTAMP"/>
+        <foreign-key foreignTable="tblentbid" name="tblentctr_idnentbid_foreign">
+            <reference local="idnentbid" foreign="idnentbid"/>
+        </foreign-key>
+        <index name="tblentctr_idnentbid_foreign">
+            <index-column name="idnentbid"/>
+        </index>
+        <vendor type="mysql">
+            <parameter name="Engine" value="InnoDB"/>
+        </vendor>
+    </table>
+    <table name="tblentprd" idMethod="native" phpName="Tblentprd">
+        <column name="idnentprd" phpName="Idnentprd" type="BIGINT" sqlType="bigint(20) unsigned" primaryKey="true" autoIncrement="true" required="true"/>
+        <column name="idnentcls" phpName="Idnentcls" type="BIGINT" sqlType="bigint(20) unsigned" required="true"/>
+        <column name="idnentqul" phpName="Idnentqul" type="BIGINT" sqlType="bigint(20) unsigned" required="true"/>
+        <column name="idnentuni" phpName="Idnentuni" type="BIGINT" sqlType="bigint(20) unsigned" required="true"/>
+        <column name="userid" phpName="Userid" type="BIGINT" sqlType="bigint(20) unsigned" required="true"/>
+        <column name="namentprd" phpName="Namentprd" type="VARCHAR" size="191" required="true"/>
+        <column name="dscentprd" phpName="Dscentprd" type="VARCHAR" size="191" required="true"/>
+        <column name="qunentprd" phpName="Qunentprd" type="DECIMAL" size="8" scale="2" required="true"/>
+        <column name="created_at" phpName="CreatedAt" type="TIMESTAMP"/>
+        <column name="updated_at" phpName="UpdatedAt" type="TIMESTAMP"/>
+        <foreign-key foreignTable="catentcls" name="tblentprd_idnentcls_foreign">
+            <reference local="idnentcls" foreign="idnentcls"/>
+        </foreign-key>
+        <foreign-key foreignTable="catentqul" name="tblentprd_idnentqul_foreign">
+            <reference local="idnentqul" foreign="idnentqul"/>
+        </foreign-key>
+        <foreign-key foreignTable="catentuni" name="tblentprd_idnentuni_foreign">
+            <reference local="idnentuni" foreign="idnentuni"/>
+        </foreign-key>
+        <foreign-key foreignTable="users" name="tblentprd_userid_foreign">
+            <reference local="userid" foreign="id"/>
+        </foreign-key>
+        <index name="tblentprd_idnentcls_foreign">
+            <index-column name="idnentcls"/>
+        </index>
+        <index name="tblentprd_idnentqul_foreign">
+            <index-column name="idnentqul"/>
+        </index>
+        <index name="tblentprd_idnentuni_foreign">
+            <index-column name="idnentuni"/>
+        </index>
+        <index name="tblentprd_userid_foreign">
+            <index-column name="userid"/>
+        </index>
+        <vendor type="mysql">
+            <parameter name="Engine" value="InnoDB"/>
+        </vendor>
+    </table>
+    <table name="tblprdpic" idMethod="native" phpName="Tblprdpic">
+        <column name="id" phpName="Id" type="BIGINT" sqlType="bigint(20) unsigned" primaryKey="true" autoIncrement="true" required="true"/>
+        <column name="created_at" phpName="CreatedAt" type="TIMESTAMP"/>
+        <column name="updated_at" phpName="UpdatedAt" type="TIMESTAMP"/>
+        <vendor type="mysql">
+            <parameter name="Engine" value="InnoDB"/>
+        </vendor>
+    </table>
+    <table name="users" idMethod="native" phpName="Users">
+        <column name="id" phpName="Id" type="BIGINT" sqlType="bigint(20) unsigned" primaryKey="true" autoIncrement="true" required="true"/>
+        <column name="name" phpName="Name" type="VARCHAR" size="191" required="true"/>
+        <column name="email" phpName="Email" type="VARCHAR" size="191" required="true"/>
+        <column name="email_verified_at" phpName="EmailVerifiedAt" type="TIMESTAMP"/>
+        <column name="password" phpName="Password" type="VARCHAR" size="191" required="true"/>
+        <column name="remember_token" phpName="RememberToken" type="VARCHAR" size="100"/>
+        <column name="created_at" phpName="CreatedAt" type="TIMESTAMP"/>
+        <column name="updated_at" phpName="UpdatedAt" type="TIMESTAMP"/>
+        <column name="role" phpName="Role" type="INTEGER" size="10" sqlType="int(10) unsigned" required="true"/>
+        <unique name="users_email_unique">
+            <unique-column name="email"/>
+        </unique>
+        <vendor type="mysql">
+            <parameter name="Engine" value="InnoDB"/>
+        </vendor>
+    </table>
 </database>

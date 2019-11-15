@@ -19,10 +19,6 @@
                 </form>
                 <ul class="col-sm-3 nav navbar-top-links navbar-right m-l-n">
                     <li>
-                        <span class="m-r-sm text-muted welcome-message">Bienvenido</span>
-                    </li>
-
-                    <li>
                         <a href="{{ url('/logout') }}"
                            onclick="event.preventDefault();
                        document.getElementById('logout-form').submit();" title="Salir">

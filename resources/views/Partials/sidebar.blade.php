@@ -2,17 +2,25 @@
     <div class="sidebar-collapse">
         <ul class="nav metismenu" id="side-menu">
             <li class="nav-header">
-                <div class="dropdown profile-element">
-                    <ul class="dropdown-menu animated fadeInRight m-t-xs">
-                        <li><a href="">Mi Perfil</a></li>
-                    </ul>
-                </div>
-                <div class="logo-element">
-                    OM
+                <div class="form-group">
+                    <label class="text-white">Usuarios:</label>
+                    <div>
+                        <select name="User" id="User" class="chosen-select">
+                            <option value="1">Cooperativa Unión Campesina</option>
+                            <option value="2">La Costeña</option>
+                            <option value="3">Magnimus Software</option>
+                        </select>
+                    </div>
                 </div>
             </li>
             <li class="">
-                <a href="">
+                <a href="{{ route('register') }}">
+                    <i class="fa fa-sign-in"></i>
+                    <span class="nav-label">Registro</span>
+                </a>
+            </li>
+            <li class="">
+                <a href="{{ route('myproducts') }}">
                     <i class="fa fa-tags"></i>
                     <span class="nav-label">Mis Productos</span>
                 </a>
@@ -41,6 +49,18 @@
                     <span class="nav-label">Comisiones</span>
                 </a>
             </li>
+            <li class="">
+                <a href="">
+                    <i class="fa fa-pie-chart"></i>
+                    <span class="nav-label">Estadísticas</span>
+                </a>
+            </li>
         </ul>
     </div>
 </nav>
+
+<script>
+    $(document).ready(function() {
+        $('.chosen-select').chosen({width: "100%"});
+    });
+</script>

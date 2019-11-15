@@ -2,8 +2,8 @@
 
 namespace Map;
 
-use \Tblentprd;
-use \TblentprdQuery;
+use \Tblentauc;
+use \TblentaucQuery;
 use Propel\Runtime\Propel;
 use Propel\Runtime\ActiveQuery\Criteria;
 use Propel\Runtime\ActiveQuery\InstancePoolTrait;
@@ -16,7 +16,7 @@ use Propel\Runtime\Map\TableMapTrait;
 
 
 /**
- * This class defines the structure of the 'tblentprd' table.
+ * This class defines the structure of the 'tblentauc' table.
  *
  *
  *
@@ -26,7 +26,7 @@ use Propel\Runtime\Map\TableMapTrait;
  * (i.e. if it's a text column type).
  *
  */
-class TblentprdTableMap extends TableMap
+class TblentaucTableMap extends TableMap
 {
     use InstancePoolTrait;
     use TableMapTrait;
@@ -34,7 +34,7 @@ class TblentprdTableMap extends TableMap
     /**
      * The (dot-path) name of this class
      */
-    const CLASS_NAME = '.Map.TblentprdTableMap';
+    const CLASS_NAME = '.Map.TblentaucTableMap';
 
     /**
      * The default database name for this class
@@ -44,22 +44,22 @@ class TblentprdTableMap extends TableMap
     /**
      * The table name for this class
      */
-    const TABLE_NAME = 'tblentprd';
+    const TABLE_NAME = 'tblentauc';
 
     /**
      * The related Propel class for this table
      */
-    const OM_CLASS = '\\Tblentprd';
+    const OM_CLASS = '\\Tblentauc';
 
     /**
      * A class that can be returned by this tableMap
      */
-    const CLASS_DEFAULT = 'Tblentprd';
+    const CLASS_DEFAULT = 'Tblentauc';
 
     /**
      * The total number of columns
      */
-    const NUM_COLUMNS = 10;
+    const NUM_COLUMNS = 7;
 
     /**
      * The number of lazy-loaded columns
@@ -69,57 +69,42 @@ class TblentprdTableMap extends TableMap
     /**
      * The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS)
      */
-    const NUM_HYDRATE_COLUMNS = 10;
+    const NUM_HYDRATE_COLUMNS = 7;
+
+    /**
+     * the column name for the idnentauc field
+     */
+    const COL_IDNENTAUC = 'tblentauc.idnentauc';
 
     /**
      * the column name for the idnentprd field
      */
-    const COL_IDNENTPRD = 'tblentprd.idnentprd';
+    const COL_IDNENTPRD = 'tblentauc.idnentprd';
 
     /**
-     * the column name for the idnentcls field
+     * the column name for the datstrauc field
      */
-    const COL_IDNENTCLS = 'tblentprd.idnentcls';
+    const COL_DATSTRAUC = 'tblentauc.datstrauc';
 
     /**
-     * the column name for the idnentqul field
+     * the column name for the datendauc field
      */
-    const COL_IDNENTQUL = 'tblentprd.idnentqul';
+    const COL_DATENDAUC = 'tblentauc.datendauc';
 
     /**
-     * the column name for the idnentuni field
+     * the column name for the basprcauc field
      */
-    const COL_IDNENTUNI = 'tblentprd.idnentuni';
-
-    /**
-     * the column name for the userid field
-     */
-    const COL_USERID = 'tblentprd.userid';
-
-    /**
-     * the column name for the namentprd field
-     */
-    const COL_NAMENTPRD = 'tblentprd.namentprd';
-
-    /**
-     * the column name for the dscentprd field
-     */
-    const COL_DSCENTPRD = 'tblentprd.dscentprd';
-
-    /**
-     * the column name for the qunentprd field
-     */
-    const COL_QUNENTPRD = 'tblentprd.qunentprd';
+    const COL_BASPRCAUC = 'tblentauc.basprcauc';
 
     /**
      * the column name for the created_at field
      */
-    const COL_CREATED_AT = 'tblentprd.created_at';
+    const COL_CREATED_AT = 'tblentauc.created_at';
 
     /**
      * the column name for the updated_at field
      */
-    const COL_UPDATED_AT = 'tblentprd.updated_at';
+    const COL_UPDATED_AT = 'tblentauc.updated_at';
 
     /**
      * The default string format for model objects of the related table
@@ -133,11 +118,11 @@ class TblentprdTableMap extends TableMap
      * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        self::TYPE_PHPNAME       => array('Idnentprd', 'Idnentcls', 'Idnentqul', 'Idnentuni', 'Userid', 'Namentprd', 'Dscentprd', 'Qunentprd', 'CreatedAt', 'UpdatedAt', ),
-        self::TYPE_CAMELNAME     => array('idnentprd', 'idnentcls', 'idnentqul', 'idnentuni', 'userid', 'namentprd', 'dscentprd', 'qunentprd', 'createdAt', 'updatedAt', ),
-        self::TYPE_COLNAME       => array(TblentprdTableMap::COL_IDNENTPRD, TblentprdTableMap::COL_IDNENTCLS, TblentprdTableMap::COL_IDNENTQUL, TblentprdTableMap::COL_IDNENTUNI, TblentprdTableMap::COL_USERID, TblentprdTableMap::COL_NAMENTPRD, TblentprdTableMap::COL_DSCENTPRD, TblentprdTableMap::COL_QUNENTPRD, TblentprdTableMap::COL_CREATED_AT, TblentprdTableMap::COL_UPDATED_AT, ),
-        self::TYPE_FIELDNAME     => array('idnentprd', 'idnentcls', 'idnentqul', 'idnentuni', 'userid', 'namentprd', 'dscentprd', 'qunentprd', 'created_at', 'updated_at', ),
-        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, )
+        self::TYPE_PHPNAME       => array('Idnentauc', 'Idnentprd', 'Datstrauc', 'Datendauc', 'Basprcauc', 'CreatedAt', 'UpdatedAt', ),
+        self::TYPE_CAMELNAME     => array('idnentauc', 'idnentprd', 'datstrauc', 'datendauc', 'basprcauc', 'createdAt', 'updatedAt', ),
+        self::TYPE_COLNAME       => array(TblentaucTableMap::COL_IDNENTAUC, TblentaucTableMap::COL_IDNENTPRD, TblentaucTableMap::COL_DATSTRAUC, TblentaucTableMap::COL_DATENDAUC, TblentaucTableMap::COL_BASPRCAUC, TblentaucTableMap::COL_CREATED_AT, TblentaucTableMap::COL_UPDATED_AT, ),
+        self::TYPE_FIELDNAME     => array('idnentauc', 'idnentprd', 'datstrauc', 'datendauc', 'basprcauc', 'created_at', 'updated_at', ),
+        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, )
     );
 
     /**
@@ -147,11 +132,11 @@ class TblentprdTableMap extends TableMap
      * e.g. self::$fieldKeys[self::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        self::TYPE_PHPNAME       => array('Idnentprd' => 0, 'Idnentcls' => 1, 'Idnentqul' => 2, 'Idnentuni' => 3, 'Userid' => 4, 'Namentprd' => 5, 'Dscentprd' => 6, 'Qunentprd' => 7, 'CreatedAt' => 8, 'UpdatedAt' => 9, ),
-        self::TYPE_CAMELNAME     => array('idnentprd' => 0, 'idnentcls' => 1, 'idnentqul' => 2, 'idnentuni' => 3, 'userid' => 4, 'namentprd' => 5, 'dscentprd' => 6, 'qunentprd' => 7, 'createdAt' => 8, 'updatedAt' => 9, ),
-        self::TYPE_COLNAME       => array(TblentprdTableMap::COL_IDNENTPRD => 0, TblentprdTableMap::COL_IDNENTCLS => 1, TblentprdTableMap::COL_IDNENTQUL => 2, TblentprdTableMap::COL_IDNENTUNI => 3, TblentprdTableMap::COL_USERID => 4, TblentprdTableMap::COL_NAMENTPRD => 5, TblentprdTableMap::COL_DSCENTPRD => 6, TblentprdTableMap::COL_QUNENTPRD => 7, TblentprdTableMap::COL_CREATED_AT => 8, TblentprdTableMap::COL_UPDATED_AT => 9, ),
-        self::TYPE_FIELDNAME     => array('idnentprd' => 0, 'idnentcls' => 1, 'idnentqul' => 2, 'idnentuni' => 3, 'userid' => 4, 'namentprd' => 5, 'dscentprd' => 6, 'qunentprd' => 7, 'created_at' => 8, 'updated_at' => 9, ),
-        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, )
+        self::TYPE_PHPNAME       => array('Idnentauc' => 0, 'Idnentprd' => 1, 'Datstrauc' => 2, 'Datendauc' => 3, 'Basprcauc' => 4, 'CreatedAt' => 5, 'UpdatedAt' => 6, ),
+        self::TYPE_CAMELNAME     => array('idnentauc' => 0, 'idnentprd' => 1, 'datstrauc' => 2, 'datendauc' => 3, 'basprcauc' => 4, 'createdAt' => 5, 'updatedAt' => 6, ),
+        self::TYPE_COLNAME       => array(TblentaucTableMap::COL_IDNENTAUC => 0, TblentaucTableMap::COL_IDNENTPRD => 1, TblentaucTableMap::COL_DATSTRAUC => 2, TblentaucTableMap::COL_DATENDAUC => 3, TblentaucTableMap::COL_BASPRCAUC => 4, TblentaucTableMap::COL_CREATED_AT => 5, TblentaucTableMap::COL_UPDATED_AT => 6, ),
+        self::TYPE_FIELDNAME     => array('idnentauc' => 0, 'idnentprd' => 1, 'datstrauc' => 2, 'datendauc' => 3, 'basprcauc' => 4, 'created_at' => 5, 'updated_at' => 6, ),
+        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, )
     );
 
     /**
@@ -164,21 +149,18 @@ class TblentprdTableMap extends TableMap
     public function initialize()
     {
         // attributes
-        $this->setName('tblentprd');
-        $this->setPhpName('Tblentprd');
+        $this->setName('tblentauc');
+        $this->setPhpName('Tblentauc');
         $this->setIdentifierQuoting(false);
-        $this->setClassName('\\Tblentprd');
+        $this->setClassName('\\Tblentauc');
         $this->setPackage('');
         $this->setUseIdGenerator(true);
         // columns
-        $this->addPrimaryKey('idnentprd', 'Idnentprd', 'BIGINT', true, null, null);
-        $this->addForeignKey('idnentcls', 'Idnentcls', 'BIGINT', 'catentcls', 'idnentcls', true, null, null);
-        $this->addForeignKey('idnentqul', 'Idnentqul', 'BIGINT', 'catentqul', 'idnentqul', true, null, null);
-        $this->addForeignKey('idnentuni', 'Idnentuni', 'BIGINT', 'catentuni', 'idnentuni', true, null, null);
-        $this->addForeignKey('userid', 'Userid', 'BIGINT', 'users', 'id', true, null, null);
-        $this->addColumn('namentprd', 'Namentprd', 'VARCHAR', true, 191, null);
-        $this->addColumn('dscentprd', 'Dscentprd', 'VARCHAR', true, 191, null);
-        $this->addColumn('qunentprd', 'Qunentprd', 'DECIMAL', true, 8, null);
+        $this->addPrimaryKey('idnentauc', 'Idnentauc', 'BIGINT', true, null, null);
+        $this->addForeignKey('idnentprd', 'Idnentprd', 'BIGINT', 'tblentprd', 'idnentprd', true, null, null);
+        $this->addColumn('datstrauc', 'Datstrauc', 'TIMESTAMP', true, null, 'CURRENT_TIMESTAMP');
+        $this->addColumn('datendauc', 'Datendauc', 'TIMESTAMP', true, null, '0000-00-00 00:00:00');
+        $this->addColumn('basprcauc', 'Basprcauc', 'DECIMAL', true, 8, null);
         $this->addColumn('created_at', 'CreatedAt', 'TIMESTAMP', false, null, null);
         $this->addColumn('updated_at', 'UpdatedAt', 'TIMESTAMP', false, null, null);
     } // initialize()
@@ -188,41 +170,20 @@ class TblentprdTableMap extends TableMap
      */
     public function buildRelations()
     {
-        $this->addRelation('Catentcls', '\\Catentcls', RelationMap::MANY_TO_ONE, array (
-  0 =>
-  array (
-    0 => ':idnentcls',
-    1 => ':idnentcls',
-  ),
-), null, null, null, false);
-        $this->addRelation('Catentqul', '\\Catentqul', RelationMap::MANY_TO_ONE, array (
-  0 =>
-  array (
-    0 => ':idnentqul',
-    1 => ':idnentqul',
-  ),
-), null, null, null, false);
-        $this->addRelation('Catentuni', '\\Catentuni', RelationMap::MANY_TO_ONE, array (
-  0 =>
-  array (
-    0 => ':idnentuni',
-    1 => ':idnentuni',
-  ),
-), null, null, null, false);
-        $this->addRelation('Users', '\\Users', RelationMap::MANY_TO_ONE, array (
-  0 =>
-  array (
-    0 => ':userid',
-    1 => ':id',
-  ),
-), null, null, null, false);
-        $this->addRelation('Tblentauc', '\\Tblentauc', RelationMap::ONE_TO_MANY, array (
+        $this->addRelation('Tblentprd', '\\Tblentprd', RelationMap::MANY_TO_ONE, array (
   0 =>
   array (
     0 => ':idnentprd',
     1 => ':idnentprd',
   ),
-), null, null, 'Tblentaucs', false);
+), null, null, null, false);
+        $this->addRelation('Tblentbid', '\\Tblentbid', RelationMap::ONE_TO_MANY, array (
+  0 =>
+  array (
+    0 => ':idnentauc',
+    1 => ':idnentauc',
+  ),
+), null, null, 'Tblentbids', false);
     } // buildRelations()
 
     /**
@@ -241,11 +202,11 @@ class TblentprdTableMap extends TableMap
     public static function getPrimaryKeyHashFromRow($row, $offset = 0, $indexType = TableMap::TYPE_NUM)
     {
         // If the PK cannot be derived from the row, return NULL.
-        if ($row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('Idnentprd', TableMap::TYPE_PHPNAME, $indexType)] === null) {
+        if ($row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('Idnentauc', TableMap::TYPE_PHPNAME, $indexType)] === null) {
             return null;
         }
 
-        return null === $row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('Idnentprd', TableMap::TYPE_PHPNAME, $indexType)] || is_scalar($row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('Idnentprd', TableMap::TYPE_PHPNAME, $indexType)]) || is_callable([$row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('Idnentprd', TableMap::TYPE_PHPNAME, $indexType)], '__toString']) ? (string) $row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('Idnentprd', TableMap::TYPE_PHPNAME, $indexType)] : $row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('Idnentprd', TableMap::TYPE_PHPNAME, $indexType)];
+        return null === $row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('Idnentauc', TableMap::TYPE_PHPNAME, $indexType)] || is_scalar($row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('Idnentauc', TableMap::TYPE_PHPNAME, $indexType)]) || is_callable([$row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('Idnentauc', TableMap::TYPE_PHPNAME, $indexType)], '__toString']) ? (string) $row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('Idnentauc', TableMap::TYPE_PHPNAME, $indexType)] : $row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('Idnentauc', TableMap::TYPE_PHPNAME, $indexType)];
     }
 
     /**
@@ -265,7 +226,7 @@ class TblentprdTableMap extends TableMap
         return (string) $row[
             $indexType == TableMap::TYPE_NUM
                 ? 0 + $offset
-                : self::translateFieldName('Idnentprd', TableMap::TYPE_PHPNAME, $indexType)
+                : self::translateFieldName('Idnentauc', TableMap::TYPE_PHPNAME, $indexType)
         ];
     }
 
@@ -282,7 +243,7 @@ class TblentprdTableMap extends TableMap
      */
     public static function getOMClass($withPrefix = true)
     {
-        return $withPrefix ? TblentprdTableMap::CLASS_DEFAULT : TblentprdTableMap::OM_CLASS;
+        return $withPrefix ? TblentaucTableMap::CLASS_DEFAULT : TblentaucTableMap::OM_CLASS;
     }
 
     /**
@@ -296,22 +257,22 @@ class TblentprdTableMap extends TableMap
      *
      * @throws PropelException Any exceptions caught during processing will be
      *                         rethrown wrapped into a PropelException.
-     * @return array           (Tblentprd object, last column rank)
+     * @return array           (Tblentauc object, last column rank)
      */
     public static function populateObject($row, $offset = 0, $indexType = TableMap::TYPE_NUM)
     {
-        $key = TblentprdTableMap::getPrimaryKeyHashFromRow($row, $offset, $indexType);
-        if (null !== ($obj = TblentprdTableMap::getInstanceFromPool($key))) {
+        $key = TblentaucTableMap::getPrimaryKeyHashFromRow($row, $offset, $indexType);
+        if (null !== ($obj = TblentaucTableMap::getInstanceFromPool($key))) {
             // We no longer rehydrate the object, since this can cause data loss.
             // See http://www.propelorm.org/ticket/509
             // $obj->hydrate($row, $offset, true); // rehydrate
-            $col = $offset + TblentprdTableMap::NUM_HYDRATE_COLUMNS;
+            $col = $offset + TblentaucTableMap::NUM_HYDRATE_COLUMNS;
         } else {
-            $cls = TblentprdTableMap::OM_CLASS;
-            /** @var Tblentprd $obj */
+            $cls = TblentaucTableMap::OM_CLASS;
+            /** @var Tblentauc $obj */
             $obj = new $cls();
             $col = $obj->hydrate($row, $offset, false, $indexType);
-            TblentprdTableMap::addInstanceToPool($obj, $key);
+            TblentaucTableMap::addInstanceToPool($obj, $key);
         }
 
         return array($obj, $col);
@@ -334,18 +295,18 @@ class TblentprdTableMap extends TableMap
         $cls = static::getOMClass(false);
         // populate the object(s)
         while ($row = $dataFetcher->fetch()) {
-            $key = TblentprdTableMap::getPrimaryKeyHashFromRow($row, 0, $dataFetcher->getIndexType());
-            if (null !== ($obj = TblentprdTableMap::getInstanceFromPool($key))) {
+            $key = TblentaucTableMap::getPrimaryKeyHashFromRow($row, 0, $dataFetcher->getIndexType());
+            if (null !== ($obj = TblentaucTableMap::getInstanceFromPool($key))) {
                 // We no longer rehydrate the object, since this can cause data loss.
                 // See http://www.propelorm.org/ticket/509
                 // $obj->hydrate($row, 0, true); // rehydrate
                 $results[] = $obj;
             } else {
-                /** @var Tblentprd $obj */
+                /** @var Tblentauc $obj */
                 $obj = new $cls();
                 $obj->hydrate($row);
                 $results[] = $obj;
-                TblentprdTableMap::addInstanceToPool($obj, $key);
+                TblentaucTableMap::addInstanceToPool($obj, $key);
             } // if key exists
         }
 
@@ -366,25 +327,19 @@ class TblentprdTableMap extends TableMap
     public static function addSelectColumns(Criteria $criteria, $alias = null)
     {
         if (null === $alias) {
-            $criteria->addSelectColumn(TblentprdTableMap::COL_IDNENTPRD);
-            $criteria->addSelectColumn(TblentprdTableMap::COL_IDNENTCLS);
-            $criteria->addSelectColumn(TblentprdTableMap::COL_IDNENTQUL);
-            $criteria->addSelectColumn(TblentprdTableMap::COL_IDNENTUNI);
-            $criteria->addSelectColumn(TblentprdTableMap::COL_USERID);
-            $criteria->addSelectColumn(TblentprdTableMap::COL_NAMENTPRD);
-            $criteria->addSelectColumn(TblentprdTableMap::COL_DSCENTPRD);
-            $criteria->addSelectColumn(TblentprdTableMap::COL_QUNENTPRD);
-            $criteria->addSelectColumn(TblentprdTableMap::COL_CREATED_AT);
-            $criteria->addSelectColumn(TblentprdTableMap::COL_UPDATED_AT);
+            $criteria->addSelectColumn(TblentaucTableMap::COL_IDNENTAUC);
+            $criteria->addSelectColumn(TblentaucTableMap::COL_IDNENTPRD);
+            $criteria->addSelectColumn(TblentaucTableMap::COL_DATSTRAUC);
+            $criteria->addSelectColumn(TblentaucTableMap::COL_DATENDAUC);
+            $criteria->addSelectColumn(TblentaucTableMap::COL_BASPRCAUC);
+            $criteria->addSelectColumn(TblentaucTableMap::COL_CREATED_AT);
+            $criteria->addSelectColumn(TblentaucTableMap::COL_UPDATED_AT);
         } else {
+            $criteria->addSelectColumn($alias . '.idnentauc');
             $criteria->addSelectColumn($alias . '.idnentprd');
-            $criteria->addSelectColumn($alias . '.idnentcls');
-            $criteria->addSelectColumn($alias . '.idnentqul');
-            $criteria->addSelectColumn($alias . '.idnentuni');
-            $criteria->addSelectColumn($alias . '.userid');
-            $criteria->addSelectColumn($alias . '.namentprd');
-            $criteria->addSelectColumn($alias . '.dscentprd');
-            $criteria->addSelectColumn($alias . '.qunentprd');
+            $criteria->addSelectColumn($alias . '.datstrauc');
+            $criteria->addSelectColumn($alias . '.datendauc');
+            $criteria->addSelectColumn($alias . '.basprcauc');
             $criteria->addSelectColumn($alias . '.created_at');
             $criteria->addSelectColumn($alias . '.updated_at');
         }
@@ -399,7 +354,7 @@ class TblentprdTableMap extends TableMap
      */
     public static function getTableMap()
     {
-        return Propel::getServiceContainer()->getDatabaseMap(TblentprdTableMap::DATABASE_NAME)->getTable(TblentprdTableMap::TABLE_NAME);
+        return Propel::getServiceContainer()->getDatabaseMap(TblentaucTableMap::DATABASE_NAME)->getTable(TblentaucTableMap::TABLE_NAME);
     }
 
     /**
@@ -407,16 +362,16 @@ class TblentprdTableMap extends TableMap
      */
     public static function buildTableMap()
     {
-        $dbMap = Propel::getServiceContainer()->getDatabaseMap(TblentprdTableMap::DATABASE_NAME);
-        if (!$dbMap->hasTable(TblentprdTableMap::TABLE_NAME)) {
-            $dbMap->addTableObject(new TblentprdTableMap());
+        $dbMap = Propel::getServiceContainer()->getDatabaseMap(TblentaucTableMap::DATABASE_NAME);
+        if (!$dbMap->hasTable(TblentaucTableMap::TABLE_NAME)) {
+            $dbMap->addTableObject(new TblentaucTableMap());
         }
     }
 
     /**
-     * Performs a DELETE on the database, given a Tblentprd or Criteria object OR a primary key value.
+     * Performs a DELETE on the database, given a Tblentauc or Criteria object OR a primary key value.
      *
-     * @param mixed               $values Criteria or Tblentprd object or primary key or array of primary keys
+     * @param mixed               $values Criteria or Tblentauc object or primary key or array of primary keys
      *              which is used to create the DELETE statement
      * @param  ConnectionInterface $con the connection to use
      * @return int             The number of affected rows (if supported by underlying database driver).  This includes CASCADE-related rows
@@ -427,27 +382,27 @@ class TblentprdTableMap extends TableMap
      public static function doDelete($values, ConnectionInterface $con = null)
      {
         if (null === $con) {
-            $con = Propel::getServiceContainer()->getWriteConnection(TblentprdTableMap::DATABASE_NAME);
+            $con = Propel::getServiceContainer()->getWriteConnection(TblentaucTableMap::DATABASE_NAME);
         }
 
         if ($values instanceof Criteria) {
             // rename for clarity
             $criteria = $values;
-        } elseif ($values instanceof \Tblentprd) { // it's a model object
+        } elseif ($values instanceof \Tblentauc) { // it's a model object
             // create criteria based on pk values
             $criteria = $values->buildPkeyCriteria();
         } else { // it's a primary key, or an array of pks
-            $criteria = new Criteria(TblentprdTableMap::DATABASE_NAME);
-            $criteria->add(TblentprdTableMap::COL_IDNENTPRD, (array) $values, Criteria::IN);
+            $criteria = new Criteria(TblentaucTableMap::DATABASE_NAME);
+            $criteria->add(TblentaucTableMap::COL_IDNENTAUC, (array) $values, Criteria::IN);
         }
 
-        $query = TblentprdQuery::create()->mergeWith($criteria);
+        $query = TblentaucQuery::create()->mergeWith($criteria);
 
         if ($values instanceof Criteria) {
-            TblentprdTableMap::clearInstancePool();
+            TblentaucTableMap::clearInstancePool();
         } elseif (!is_object($values)) { // it's a primary key, or an array of pks
             foreach ((array) $values as $singleval) {
-                TblentprdTableMap::removeInstanceFromPool($singleval);
+                TblentaucTableMap::removeInstanceFromPool($singleval);
             }
         }
 
@@ -455,20 +410,20 @@ class TblentprdTableMap extends TableMap
     }
 
     /**
-     * Deletes all rows from the tblentprd table.
+     * Deletes all rows from the tblentauc table.
      *
      * @param ConnectionInterface $con the connection to use
      * @return int The number of affected rows (if supported by underlying database driver).
      */
     public static function doDeleteAll(ConnectionInterface $con = null)
     {
-        return TblentprdQuery::create()->doDeleteAll($con);
+        return TblentaucQuery::create()->doDeleteAll($con);
     }
 
     /**
-     * Performs an INSERT on the database, given a Tblentprd or Criteria object.
+     * Performs an INSERT on the database, given a Tblentauc or Criteria object.
      *
-     * @param mixed               $criteria Criteria or Tblentprd object containing data that is used to create the INSERT statement.
+     * @param mixed               $criteria Criteria or Tblentauc object containing data that is used to create the INSERT statement.
      * @param ConnectionInterface $con the ConnectionInterface connection to use
      * @return mixed           The new primary key.
      * @throws PropelException Any exceptions caught during processing will be
@@ -477,22 +432,22 @@ class TblentprdTableMap extends TableMap
     public static function doInsert($criteria, ConnectionInterface $con = null)
     {
         if (null === $con) {
-            $con = Propel::getServiceContainer()->getWriteConnection(TblentprdTableMap::DATABASE_NAME);
+            $con = Propel::getServiceContainer()->getWriteConnection(TblentaucTableMap::DATABASE_NAME);
         }
 
         if ($criteria instanceof Criteria) {
             $criteria = clone $criteria; // rename for clarity
         } else {
-            $criteria = $criteria->buildCriteria(); // build Criteria from Tblentprd object
+            $criteria = $criteria->buildCriteria(); // build Criteria from Tblentauc object
         }
 
-        if ($criteria->containsKey(TblentprdTableMap::COL_IDNENTPRD) && $criteria->keyContainsValue(TblentprdTableMap::COL_IDNENTPRD) ) {
-            throw new PropelException('Cannot insert a value for auto-increment primary key ('.TblentprdTableMap::COL_IDNENTPRD.')');
+        if ($criteria->containsKey(TblentaucTableMap::COL_IDNENTAUC) && $criteria->keyContainsValue(TblentaucTableMap::COL_IDNENTAUC) ) {
+            throw new PropelException('Cannot insert a value for auto-increment primary key ('.TblentaucTableMap::COL_IDNENTAUC.')');
         }
 
 
         // Set the correct dbName
-        $query = TblentprdQuery::create()->mergeWith($criteria);
+        $query = TblentaucQuery::create()->mergeWith($criteria);
 
         // use transaction because $criteria could contain info
         // for more than one table (I guess, conceivably)
@@ -501,7 +456,7 @@ class TblentprdTableMap extends TableMap
         });
     }
 
-} // TblentprdTableMap
+} // TblentaucTableMap
 // This is the static code needed to register the TableMap for this table with the main Propel class.
 //
-TblentprdTableMap::buildTableMap();
+TblentaucTableMap::buildTableMap();
