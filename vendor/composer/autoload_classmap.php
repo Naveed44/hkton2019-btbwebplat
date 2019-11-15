@@ -6,6 +6,7 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
+    'AlterUsersTable' => $baseDir . '/database/migrations/2019_11_15_060103_alter_users_table.php',
     'App\\Console\\Kernel' => $baseDir . '/app/Console/Kernel.php',
     'App\\Exceptions\\Handler' => $baseDir . '/app/Exceptions/Handler.php',
     'App\\Http\\Controllers\\Auth\\ConfirmPasswordController' => $baseDir . '/app/Http/Controllers/Auth/ConfirmPasswordController.php',
@@ -15,6 +16,7 @@ return array(
     'App\\Http\\Controllers\\Auth\\ResetPasswordController' => $baseDir . '/app/Http/Controllers/Auth/ResetPasswordController.php',
     'App\\Http\\Controllers\\Auth\\VerificationController' => $baseDir . '/app/Http/Controllers/Auth/VerificationController.php',
     'App\\Http\\Controllers\\Controller' => $baseDir . '/app/Http/Controllers/Controller.php',
+    'App\\Http\\Controllers\\HomeController' => $baseDir . '/app/Http/Controllers/HomeController.php',
     'App\\Http\\Kernel' => $baseDir . '/app/Http/Kernel.php',
     'App\\Http\\Middleware\\Authenticate' => $baseDir . '/app/Http/Middleware/Authenticate.php',
     'App\\Http\\Middleware\\CheckForMaintenanceMode' => $baseDir . '/app/Http/Middleware/CheckForMaintenanceMode.php',
@@ -89,12 +91,12 @@ return array(
     'CatentqulQuery' => $baseDir . '/database/generated-classes/CatentqulQuery.php',
     'Catentuni' => $baseDir . '/database/generated-classes/Catentuni.php',
     'CatentuniQuery' => $baseDir . '/database/generated-classes/CatentuniQuery.php',
-    'CreateAuctionsTable' => $baseDir . '/database/migrations/2019_11_15_102317_create_tblentauc_table.php',
     'CreateCatentclsTable' => $baseDir . '/database/migrations/2019_11_15_070311_create_catentcls_table.php',
     'CreateCatentqulTable' => $baseDir . '/database/migrations/2019_11_15_070511_create_catentqul_table.php',
     'CreateCatentuniTable' => $baseDir . '/database/migrations/2019_11_15_070849_create_catentuni_table.php',
     'CreateFailedJobsTable' => $baseDir . '/database/migrations/2019_08_19_000000_create_failed_jobs_table.php',
     'CreatePasswordResetsTable' => $baseDir . '/database/migrations/2014_10_12_100000_create_password_resets_table.php',
+    'CreateTblentaucTable' => $baseDir . '/database/migrations/2019_11_15_102317_create_tblentauc_table.php',
     'CreateTblentbidTable' => $baseDir . '/database/migrations/2019_11_15_102731_create_tblentbid_table.php',
     'CreateTblentcmsTable' => $baseDir . '/database/migrations/2019_11_15_103519_create_tblentcms_table.php',
     'CreateTblentctrTable' => $baseDir . '/database/migrations/2019_11_15_103221_create_tblentctr_table.php',

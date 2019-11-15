@@ -14,3 +14,10 @@
 Route::get('/', function () {
     return view('welcome');
 });
+Route::get('/home', function () {
+    return view('welcome');
+});
+Route::get('/myproducts', ['as' => 'myproducts', 'uses' => 'HomeController@getusrprd']);
+Auth::routes();
+
+

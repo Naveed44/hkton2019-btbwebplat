@@ -424,6 +424,7 @@ class ComposerStaticInit8c4694922e76bec799840140c0ebfdd1
     );
 
     public static $classMap = array (
+        'AlterUsersTable' => __DIR__ . '/../..' . '/database/migrations/2019_11_15_060103_alter_users_table.php',
         'App\\Console\\Kernel' => __DIR__ . '/../..' . '/app/Console/Kernel.php',
         'App\\Exceptions\\Handler' => __DIR__ . '/../..' . '/app/Exceptions/Handler.php',
         'App\\Http\\Controllers\\Auth\\ConfirmPasswordController' => __DIR__ . '/../..' . '/app/Http/Controllers/Auth/ConfirmPasswordController.php',
@@ -433,6 +434,7 @@ class ComposerStaticInit8c4694922e76bec799840140c0ebfdd1
         'App\\Http\\Controllers\\Auth\\ResetPasswordController' => __DIR__ . '/../..' . '/app/Http/Controllers/Auth/ResetPasswordController.php',
         'App\\Http\\Controllers\\Auth\\VerificationController' => __DIR__ . '/../..' . '/app/Http/Controllers/Auth/VerificationController.php',
         'App\\Http\\Controllers\\Controller' => __DIR__ . '/../..' . '/app/Http/Controllers/Controller.php',
+        'App\\Http\\Controllers\\HomeController' => __DIR__ . '/../..' . '/app/Http/Controllers/HomeController.php',
         'App\\Http\\Kernel' => __DIR__ . '/../..' . '/app/Http/Kernel.php',
         'App\\Http\\Middleware\\Authenticate' => __DIR__ . '/../..' . '/app/Http/Middleware/Authenticate.php',
         'App\\Http\\Middleware\\CheckForMaintenanceMode' => __DIR__ . '/../..' . '/app/Http/Middleware/CheckForMaintenanceMode.php',
@@ -507,12 +509,12 @@ class ComposerStaticInit8c4694922e76bec799840140c0ebfdd1
         'CatentqulQuery' => __DIR__ . '/../..' . '/database/generated-classes/CatentqulQuery.php',
         'Catentuni' => __DIR__ . '/../..' . '/database/generated-classes/Catentuni.php',
         'CatentuniQuery' => __DIR__ . '/../..' . '/database/generated-classes/CatentuniQuery.php',
-        'CreateAuctionsTable' => __DIR__ . '/../..' . '/database/migrations/2019_11_15_102317_create_tblentauc_table.php',
         'CreateCatentclsTable' => __DIR__ . '/../..' . '/database/migrations/2019_11_15_070311_create_catentcls_table.php',
         'CreateCatentqulTable' => __DIR__ . '/../..' . '/database/migrations/2019_11_15_070511_create_catentqul_table.php',
         'CreateCatentuniTable' => __DIR__ . '/../..' . '/database/migrations/2019_11_15_070849_create_catentuni_table.php',
         'CreateFailedJobsTable' => __DIR__ . '/../..' . '/database/migrations/2019_08_19_000000_create_failed_jobs_table.php',
         'CreatePasswordResetsTable' => __DIR__ . '/../..' . '/database/migrations/2014_10_12_100000_create_password_resets_table.php',
+        'CreateTblentaucTable' => __DIR__ . '/../..' . '/database/migrations/2019_11_15_102317_create_tblentauc_table.php',
         'CreateTblentbidTable' => __DIR__ . '/../..' . '/database/migrations/2019_11_15_102731_create_tblentbid_table.php',
         'CreateTblentcmsTable' => __DIR__ . '/../..' . '/database/migrations/2019_11_15_103519_create_tblentcms_table.php',
         'CreateTblentctrTable' => __DIR__ . '/../..' . '/database/migrations/2019_11_15_103221_create_tblentctr_table.php',
