@@ -137,8 +137,8 @@ class PasswordResetsTableMap extends TableMap
         $this->setPackage('');
         $this->setUseIdGenerator(false);
         // columns
-        $this->addColumn('email', 'Email', 'VARCHAR', true, 255, null);
-        $this->addColumn('token', 'Token', 'VARCHAR', true, 255, null);
+        $this->addColumn('email', 'Email', 'VARCHAR', true, 191, null);
+        $this->addColumn('token', 'Token', 'VARCHAR', true, 191, null);
         $this->addColumn('created_at', 'CreatedAt', 'TIMESTAMP', false, null, null);
     } // initialize()
 

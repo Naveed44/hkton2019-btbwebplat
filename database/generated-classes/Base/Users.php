@@ -2,16 +2,21 @@
 
 namespace Base;
 
+use \Tblentprd as ChildTblentprd;
+use \TblentprdQuery as ChildTblentprdQuery;
+use \Users as ChildUsers;
 use \UsersQuery as ChildUsersQuery;
 use \DateTime;
 use \Exception;
 use \PDO;
+use Map\TblentprdTableMap;
 use Map\UsersTableMap;
 use Propel\Runtime\Propel;
 use Propel\Runtime\ActiveQuery\Criteria;
 use Propel\Runtime\ActiveQuery\ModelCriteria;
 use Propel\Runtime\ActiveRecord\ActiveRecordInterface;
 use Propel\Runtime\Collection\Collection;
+use Propel\Runtime\Collection\ObjectCollection;
 use Propel\Runtime\Connection\ConnectionInterface;
 use Propel\Runtime\Exception\BadMethodCallException;
 use Propel\Runtime\Exception\LogicException;
@@ -118,11 +123,10 @@ abstract class Users implements ActiveRecordInterface
     protected $updated_at;
 
     /**
-     * The value for the role field.
-     *
-     * @var        int
+     * @var        ObjectCollection|ChildTblentprd[] Collection to store aggregation of ChildTblentprd objects.
      */
-    protected $role;
+    protected $collTblentprds;
+    protected $collTblentprdsPartial;
 
     /**
      * Flag to prevent endless save loop, if this object is referenced
@@ -131,6 +135,12 @@ abstract class Users implements ActiveRecordInterface
      * @var boolean
      */
     protected $alreadyInSave = false;
+
+    /**
+     * An array of objects scheduled for deletion.
+     * @var ObjectCollection|ChildTblentprd[]
+     */
+    protected $tblentprdsScheduledForDeletion = null;
 
     /**
      * Initializes internal state of Base\Users object.
@@ -468,16 +478,6 @@ abstract class Users implements ActiveRecordInterface
     }
 
     /**
-     * Get the [role] column value.
-     *
-     * @return int
-     */
-    public function getRole()
-    {
-        return $this->role;
-    }
-
-    /**
      * Set the value of [id] column.
      *
      * @param string $v new value
@@ -638,26 +638,6 @@ abstract class Users implements ActiveRecordInterface
     } // setUpdatedAt()
 
     /**
-     * Set the value of [role] column.
-     *
-     * @param int $v new value
-     * @return $this|\Users The current object (for fluent API support)
-     */
-    public function setRole($v)
-    {
-        if ($v !== null) {
-            $v = (int) $v;
-        }
-
-        if ($this->role !== $v) {
-            $this->role = $v;
-            $this->modifiedColumns[UsersTableMap::COL_ROLE] = true;
-        }
-
-        return $this;
-    } // setRole()
-
-    /**
      * Indicates whether the columns in this object are only set to default values.
      *
      * This method can be used in conjunction with isModified() to indicate whether an object is both
@@ -725,9 +705,6 @@ abstract class Users implements ActiveRecordInterface
                 $col = null;
             }
             $this->updated_at = (null !== $col) ? PropelDateTime::newInstance($col, null, 'DateTime') : null;
-
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 8 + $startcol : UsersTableMap::translateFieldName('Role', TableMap::TYPE_PHPNAME, $indexType)];
-            $this->role = (null !== $col) ? (int) $col : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -736,7 +713,7 @@ abstract class Users implements ActiveRecordInterface
                 $this->ensureConsistency();
             }
 
-            return $startcol + 9; // 9 = UsersTableMap::NUM_HYDRATE_COLUMNS.
+            return $startcol + 8; // 8 = UsersTableMap::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException(sprintf('Error populating %s object', '\\Users'), 0, $e);
@@ -796,6 +773,8 @@ abstract class Users implements ActiveRecordInterface
         $this->hydrate($row, 0, true, $dataFetcher->getIndexType()); // rehydrate
 
         if ($deep) {  // also de-associate any related objects?
+
+            $this->collTblentprds = null;
 
         } // if (deep)
     }
@@ -911,6 +890,23 @@ abstract class Users implements ActiveRecordInterface
                 $this->resetModified();
             }
 
+            if ($this->tblentprdsScheduledForDeletion !== null) {
+                if (!$this->tblentprdsScheduledForDeletion->isEmpty()) {
+                    \TblentprdQuery::create()
+                        ->filterByPrimaryKeys($this->tblentprdsScheduledForDeletion->getPrimaryKeys(false))
+                        ->delete($con);
+                    $this->tblentprdsScheduledForDeletion = null;
+                }
+            }
+
+            if ($this->collTblentprds !== null) {
+                foreach ($this->collTblentprds as $referrerFK) {
+                    if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
+                        $affectedRows += $referrerFK->save($con);
+                    }
+                }
+            }
+
             $this->alreadyInSave = false;
 
         }
@@ -961,9 +957,6 @@ abstract class Users implements ActiveRecordInterface
         if ($this->isColumnModified(UsersTableMap::COL_UPDATED_AT)) {
             $modifiedColumns[':p' . $index++]  = 'updated_at';
         }
-        if ($this->isColumnModified(UsersTableMap::COL_ROLE)) {
-            $modifiedColumns[':p' . $index++]  = 'role';
-        }
 
         $sql = sprintf(
             'INSERT INTO users (%s) VALUES (%s)',
@@ -998,9 +991,6 @@ abstract class Users implements ActiveRecordInterface
                         break;
                     case 'updated_at':
                         $stmt->bindValue($identifier, $this->updated_at ? $this->updated_at->format("Y-m-d H:i:s.u") : null, PDO::PARAM_STR);
-                        break;
-                    case 'role':
-                        $stmt->bindValue($identifier, $this->role, PDO::PARAM_INT);
                         break;
                 }
             }
@@ -1088,9 +1078,6 @@ abstract class Users implements ActiveRecordInterface
             case 7:
                 return $this->getUpdatedAt();
                 break;
-            case 8:
-                return $this->getRole();
-                break;
             default:
                 return null;
                 break;
@@ -1108,10 +1095,11 @@ abstract class Users implements ActiveRecordInterface
      *                    Defaults to TableMap::TYPE_PHPNAME.
      * @param     boolean $includeLazyLoadColumns (optional) Whether to include lazy loaded columns. Defaults to TRUE.
      * @param     array $alreadyDumpedObjects List of objects to skip to avoid recursion
+     * @param     boolean $includeForeignObjects (optional) Whether to include hydrated related objects. Default to FALSE.
      *
      * @return array an associative array containing the field names (as keys) and field values
      */
-    public function toArray($keyType = TableMap::TYPE_PHPNAME, $includeLazyLoadColumns = true, $alreadyDumpedObjects = array())
+    public function toArray($keyType = TableMap::TYPE_PHPNAME, $includeLazyLoadColumns = true, $alreadyDumpedObjects = array(), $includeForeignObjects = false)
     {
 
         if (isset($alreadyDumpedObjects['Users'][$this->hashCode()])) {
@@ -1128,7 +1116,6 @@ abstract class Users implements ActiveRecordInterface
             $keys[5] => $this->getRememberToken(),
             $keys[6] => $this->getCreatedAt(),
             $keys[7] => $this->getUpdatedAt(),
-            $keys[8] => $this->getRole(),
         );
         if ($result[$keys[3]] instanceof \DateTimeInterface) {
             $result[$keys[3]] = $result[$keys[3]]->format('c');
@@ -1147,6 +1134,23 @@ abstract class Users implements ActiveRecordInterface
             $result[$key] = $virtualColumn;
         }
 
+        if ($includeForeignObjects) {
+            if (null !== $this->collTblentprds) {
+
+                switch ($keyType) {
+                    case TableMap::TYPE_CAMELNAME:
+                        $key = 'tblentprds';
+                        break;
+                    case TableMap::TYPE_FIELDNAME:
+                        $key = 'tblentprds';
+                        break;
+                    default:
+                        $key = 'Tblentprds';
+                }
+
+                $result[$key] = $this->collTblentprds->toArray(null, false, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
+            }
+        }
 
         return $result;
     }
@@ -1204,9 +1208,6 @@ abstract class Users implements ActiveRecordInterface
             case 7:
                 $this->setUpdatedAt($value);
                 break;
-            case 8:
-                $this->setRole($value);
-                break;
         } // switch()
 
         return $this;
@@ -1256,9 +1257,6 @@ abstract class Users implements ActiveRecordInterface
         }
         if (array_key_exists($keys[7], $arr)) {
             $this->setUpdatedAt($arr[$keys[7]]);
-        }
-        if (array_key_exists($keys[8], $arr)) {
-            $this->setRole($arr[$keys[8]]);
         }
     }
 
@@ -1324,9 +1322,6 @@ abstract class Users implements ActiveRecordInterface
         }
         if ($this->isColumnModified(UsersTableMap::COL_UPDATED_AT)) {
             $criteria->add(UsersTableMap::COL_UPDATED_AT, $this->updated_at);
-        }
-        if ($this->isColumnModified(UsersTableMap::COL_ROLE)) {
-            $criteria->add(UsersTableMap::COL_ROLE, $this->role);
         }
 
         return $criteria;
@@ -1421,7 +1416,20 @@ abstract class Users implements ActiveRecordInterface
         $copyObj->setRememberToken($this->getRememberToken());
         $copyObj->setCreatedAt($this->getCreatedAt());
         $copyObj->setUpdatedAt($this->getUpdatedAt());
-        $copyObj->setRole($this->getRole());
+
+        if ($deepCopy) {
+            // important: temporarily setNew(false) because this affects the behavior of
+            // the getter/setter methods for fkey referrer objects.
+            $copyObj->setNew(false);
+
+            foreach ($this->getTblentprds() as $relObj) {
+                if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
+                    $copyObj->addTblentprd($relObj->copy($deepCopy));
+                }
+            }
+
+        } // if ($deepCopy)
+
         if ($makeNew) {
             $copyObj->setNew(true);
             $copyObj->setId(NULL); // this is a auto-increment column, so set to default value
@@ -1450,6 +1458,323 @@ abstract class Users implements ActiveRecordInterface
         return $copyObj;
     }
 
+
+    /**
+     * Initializes a collection based on the name of a relation.
+     * Avoids crafting an 'init[$relationName]s' method name
+     * that wouldn't work when StandardEnglishPluralizer is used.
+     *
+     * @param      string $relationName The name of the relation to initialize
+     * @return void
+     */
+    public function initRelation($relationName)
+    {
+        if ('Tblentprd' == $relationName) {
+            $this->initTblentprds();
+            return;
+        }
+    }
+
+    /**
+     * Clears out the collTblentprds collection
+     *
+     * This does not modify the database; however, it will remove any associated objects, causing
+     * them to be refetched by subsequent calls to accessor method.
+     *
+     * @return void
+     * @see        addTblentprds()
+     */
+    public function clearTblentprds()
+    {
+        $this->collTblentprds = null; // important to set this to NULL since that means it is uninitialized
+    }
+
+    /**
+     * Reset is the collTblentprds collection loaded partially.
+     */
+    public function resetPartialTblentprds($v = true)
+    {
+        $this->collTblentprdsPartial = $v;
+    }
+
+    /**
+     * Initializes the collTblentprds collection.
+     *
+     * By default this just sets the collTblentprds collection to an empty array (like clearcollTblentprds());
+     * however, you may wish to override this method in your stub class to provide setting appropriate
+     * to your application -- for example, setting the initial array to the values stored in database.
+     *
+     * @param      boolean $overrideExisting If set to true, the method call initializes
+     *                                        the collection even if it is not empty
+     *
+     * @return void
+     */
+    public function initTblentprds($overrideExisting = true)
+    {
+        if (null !== $this->collTblentprds && !$overrideExisting) {
+            return;
+        }
+
+        $collectionClassName = TblentprdTableMap::getTableMap()->getCollectionClassName();
+
+        $this->collTblentprds = new $collectionClassName;
+        $this->collTblentprds->setModel('\Tblentprd');
+    }
+
+    /**
+     * Gets an array of ChildTblentprd objects which contain a foreign key that references this object.
+     *
+     * If the $criteria is not null, it is used to always fetch the results from the database.
+     * Otherwise the results are fetched from the database the first time, then cached.
+     * Next time the same method is called without $criteria, the cached collection is returned.
+     * If this ChildUsers is new, it will return
+     * an empty collection or the current collection; the criteria is ignored on a new object.
+     *
+     * @param      Criteria $criteria optional Criteria object to narrow the query
+     * @param      ConnectionInterface $con optional connection object
+     * @return ObjectCollection|ChildTblentprd[] List of ChildTblentprd objects
+     * @throws PropelException
+     */
+    public function getTblentprds(Criteria $criteria = null, ConnectionInterface $con = null)
+    {
+        $partial = $this->collTblentprdsPartial && !$this->isNew();
+        if (null === $this->collTblentprds || null !== $criteria  || $partial) {
+            if ($this->isNew() && null === $this->collTblentprds) {
+                // return empty collection
+                $this->initTblentprds();
+            } else {
+                $collTblentprds = ChildTblentprdQuery::create(null, $criteria)
+                    ->filterByUsers($this)
+                    ->find($con);
+
+                if (null !== $criteria) {
+                    if (false !== $this->collTblentprdsPartial && count($collTblentprds)) {
+                        $this->initTblentprds(false);
+
+                        foreach ($collTblentprds as $obj) {
+                            if (false == $this->collTblentprds->contains($obj)) {
+                                $this->collTblentprds->append($obj);
+                            }
+                        }
+
+                        $this->collTblentprdsPartial = true;
+                    }
+
+                    return $collTblentprds;
+                }
+
+                if ($partial && $this->collTblentprds) {
+                    foreach ($this->collTblentprds as $obj) {
+                        if ($obj->isNew()) {
+                            $collTblentprds[] = $obj;
+                        }
+                    }
+                }
+
+                $this->collTblentprds = $collTblentprds;
+                $this->collTblentprdsPartial = false;
+            }
+        }
+
+        return $this->collTblentprds;
+    }
+
+    /**
+     * Sets a collection of ChildTblentprd objects related by a one-to-many relationship
+     * to the current object.
+     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
+     * and new objects from the given Propel collection.
+     *
+     * @param      Collection $tblentprds A Propel collection.
+     * @param      ConnectionInterface $con Optional connection object
+     * @return $this|ChildUsers The current object (for fluent API support)
+     */
+    public function setTblentprds(Collection $tblentprds, ConnectionInterface $con = null)
+    {
+        /** @var ChildTblentprd[] $tblentprdsToDelete */
+        $tblentprdsToDelete = $this->getTblentprds(new Criteria(), $con)->diff($tblentprds);
+
+
+        $this->tblentprdsScheduledForDeletion = $tblentprdsToDelete;
+
+        foreach ($tblentprdsToDelete as $tblentprdRemoved) {
+            $tblentprdRemoved->setUsers(null);
+        }
+
+        $this->collTblentprds = null;
+        foreach ($tblentprds as $tblentprd) {
+            $this->addTblentprd($tblentprd);
+        }
+
+        $this->collTblentprds = $tblentprds;
+        $this->collTblentprdsPartial = false;
+
+        return $this;
+    }
+
+    /**
+     * Returns the number of related Tblentprd objects.
+     *
+     * @param      Criteria $criteria
+     * @param      boolean $distinct
+     * @param      ConnectionInterface $con
+     * @return int             Count of related Tblentprd objects.
+     * @throws PropelException
+     */
+    public function countTblentprds(Criteria $criteria = null, $distinct = false, ConnectionInterface $con = null)
+    {
+        $partial = $this->collTblentprdsPartial && !$this->isNew();
+        if (null === $this->collTblentprds || null !== $criteria || $partial) {
+            if ($this->isNew() && null === $this->collTblentprds) {
+                return 0;
+            }
+
+            if ($partial && !$criteria) {
+                return count($this->getTblentprds());
+            }
+
+            $query = ChildTblentprdQuery::create(null, $criteria);
+            if ($distinct) {
+                $query->distinct();
+            }
+
+            return $query
+                ->filterByUsers($this)
+                ->count($con);
+        }
+
+        return count($this->collTblentprds);
+    }
+
+    /**
+     * Method called to associate a ChildTblentprd object to this object
+     * through the ChildTblentprd foreign key attribute.
+     *
+     * @param  ChildTblentprd $l ChildTblentprd
+     * @return $this|\Users The current object (for fluent API support)
+     */
+    public function addTblentprd(ChildTblentprd $l)
+    {
+        if ($this->collTblentprds === null) {
+            $this->initTblentprds();
+            $this->collTblentprdsPartial = true;
+        }
+
+        if (!$this->collTblentprds->contains($l)) {
+            $this->doAddTblentprd($l);
+
+            if ($this->tblentprdsScheduledForDeletion and $this->tblentprdsScheduledForDeletion->contains($l)) {
+                $this->tblentprdsScheduledForDeletion->remove($this->tblentprdsScheduledForDeletion->search($l));
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param ChildTblentprd $tblentprd The ChildTblentprd object to add.
+     */
+    protected function doAddTblentprd(ChildTblentprd $tblentprd)
+    {
+        $this->collTblentprds[]= $tblentprd;
+        $tblentprd->setUsers($this);
+    }
+
+    /**
+     * @param  ChildTblentprd $tblentprd The ChildTblentprd object to remove.
+     * @return $this|ChildUsers The current object (for fluent API support)
+     */
+    public function removeTblentprd(ChildTblentprd $tblentprd)
+    {
+        if ($this->getTblentprds()->contains($tblentprd)) {
+            $pos = $this->collTblentprds->search($tblentprd);
+            $this->collTblentprds->remove($pos);
+            if (null === $this->tblentprdsScheduledForDeletion) {
+                $this->tblentprdsScheduledForDeletion = clone $this->collTblentprds;
+                $this->tblentprdsScheduledForDeletion->clear();
+            }
+            $this->tblentprdsScheduledForDeletion[]= clone $tblentprd;
+            $tblentprd->setUsers(null);
+        }
+
+        return $this;
+    }
+
+
+    /**
+     * If this collection has already been initialized with
+     * an identical criteria, it returns the collection.
+     * Otherwise if this Users is new, it will return
+     * an empty collection; or if this Users has previously
+     * been saved, it will retrieve related Tblentprds from storage.
+     *
+     * This method is protected by default in order to keep the public
+     * api reasonable.  You can provide public methods for those you
+     * actually need in Users.
+     *
+     * @param      Criteria $criteria optional Criteria object to narrow the query
+     * @param      ConnectionInterface $con optional connection object
+     * @param      string $joinBehavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @return ObjectCollection|ChildTblentprd[] List of ChildTblentprd objects
+     */
+    public function getTblentprdsJoinCatentcls(Criteria $criteria = null, ConnectionInterface $con = null, $joinBehavior = Criteria::LEFT_JOIN)
+    {
+        $query = ChildTblentprdQuery::create(null, $criteria);
+        $query->joinWith('Catentcls', $joinBehavior);
+
+        return $this->getTblentprds($query, $con);
+    }
+
+
+    /**
+     * If this collection has already been initialized with
+     * an identical criteria, it returns the collection.
+     * Otherwise if this Users is new, it will return
+     * an empty collection; or if this Users has previously
+     * been saved, it will retrieve related Tblentprds from storage.
+     *
+     * This method is protected by default in order to keep the public
+     * api reasonable.  You can provide public methods for those you
+     * actually need in Users.
+     *
+     * @param      Criteria $criteria optional Criteria object to narrow the query
+     * @param      ConnectionInterface $con optional connection object
+     * @param      string $joinBehavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @return ObjectCollection|ChildTblentprd[] List of ChildTblentprd objects
+     */
+    public function getTblentprdsJoinCatentqul(Criteria $criteria = null, ConnectionInterface $con = null, $joinBehavior = Criteria::LEFT_JOIN)
+    {
+        $query = ChildTblentprdQuery::create(null, $criteria);
+        $query->joinWith('Catentqul', $joinBehavior);
+
+        return $this->getTblentprds($query, $con);
+    }
+
+
+    /**
+     * If this collection has already been initialized with
+     * an identical criteria, it returns the collection.
+     * Otherwise if this Users is new, it will return
+     * an empty collection; or if this Users has previously
+     * been saved, it will retrieve related Tblentprds from storage.
+     *
+     * This method is protected by default in order to keep the public
+     * api reasonable.  You can provide public methods for those you
+     * actually need in Users.
+     *
+     * @param      Criteria $criteria optional Criteria object to narrow the query
+     * @param      ConnectionInterface $con optional connection object
+     * @param      string $joinBehavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @return ObjectCollection|ChildTblentprd[] List of ChildTblentprd objects
+     */
+    public function getTblentprdsJoinCatentuni(Criteria $criteria = null, ConnectionInterface $con = null, $joinBehavior = Criteria::LEFT_JOIN)
+    {
+        $query = ChildTblentprdQuery::create(null, $criteria);
+        $query->joinWith('Catentuni', $joinBehavior);
+
+        return $this->getTblentprds($query, $con);
+    }
+
     /**
      * Clears the current object, sets all attributes to their default values and removes
      * outgoing references as well as back-references (from other objects to this one. Results probably in a database
@@ -1465,7 +1790,6 @@ abstract class Users implements ActiveRecordInterface
         $this->remember_token = null;
         $this->created_at = null;
         $this->updated_at = null;
-        $this->role = null;
         $this->alreadyInSave = false;
         $this->clearAllReferences();
         $this->resetModified();
@@ -1484,8 +1808,14 @@ abstract class Users implements ActiveRecordInterface
     public function clearAllReferences($deep = false)
     {
         if ($deep) {
+            if ($this->collTblentprds) {
+                foreach ($this->collTblentprds as $o) {
+                    $o->clearAllReferences($deep);
+                }
+            }
         } // if ($deep)
 
+        $this->collTblentprds = null;
     }
 
     /**
