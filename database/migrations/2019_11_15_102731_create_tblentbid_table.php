@@ -17,7 +17,7 @@ class CreateTblentbidTable extends Migration
             $table->bigIncrements('idnentbid');
             $table->unsignedBigInteger('idnentauc');
             $table->foreign('idnentauc')->references('idnentauc')->on('tblentauc');
-            $table->unsignedBigInteger('userdid');
+            $table->unsignedBigInteger('usersid');
             $table->foreign('usersid')->references('id')->on('users');
             $table->timestamp('datissbid');
             $table->decimal('prcunibid');

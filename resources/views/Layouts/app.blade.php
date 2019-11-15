@@ -43,28 +43,28 @@
 
     <link href="{{ asset('css/plugins/blueimp/css/blueimp-gallery.min.css') }}" rel="stylesheet">
 
-    @include('partials/includesJs')
-    @include('partials/jsFunctions')
+    @include('Partials/includesJs')
+    @include('Partials/jsFunctions')
 
 </head>
 
 <body class="md-skin fixed-sidebar fixed-nav ">
 <div id="wrapper">
     <!-- sidebar-->
-    @include('partials/sidebar')
+    @include('Partials/sidebar')
 
 
     <div id="page-wrapper" class="gray-bg">
 
         <!-- top navbar-->
-        @include('partials/header')
+        @include('Partials/header')
 
         <div class="wrapper wrapper-content ">
             @yield('content')
         </div>
 
         <!-- footer -->
-        @include('partials/footer')
+        @include('Partials/footer')
 
     </div>
 </div>

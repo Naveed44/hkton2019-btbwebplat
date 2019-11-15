@@ -42,6 +42,9 @@
         ]
     },
     "autoload-dev": {
+        "classmap": [
+            "database", "database/generated-classes/"
+        ],
         "psr-4": {
             "Tests\\": "tests/"
         }
