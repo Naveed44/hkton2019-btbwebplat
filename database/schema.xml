@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<database name="ftb" defaultIdMethod="native" defaultPhpNamingMethod="underscore">
+  <table name="failed_jobs" idMethod="native" phpName="FailedJobs">
+    <column name="id" phpName="Id" type="BIGINT" sqlType="bigint(20) unsigned" primaryKey="true" autoIncrement="true" required="true"/>
+    <column name="connection" phpName="Connection" type="LONGVARCHAR" required="true"/>
+    <column name="queue" phpName="Queue" type="LONGVARCHAR" required="true"/>
+    <column name="payload" phpName="Payload" type="CLOB" required="true"/>
+    <column name="exception" phpName="Exception" type="CLOB" required="true"/>
+    <column name="failed_at" phpName="FailedAt" type="TIMESTAMP" required="true" defaultExpr="CURRENT_TIMESTAMP"/>
+    <vendor type="mysql">
+      <parameter name="Engine" value="InnoDB"/>
+    </vendor>
+  </table>
+  <table name="migrations" idMethod="native" phpName="Migrations">
+    <column name="id" phpName="Id" type="INTEGER" size="10" sqlType="int(10) unsigned" primaryKey="true" autoIncrement="true" required="true"/>
+    <column name="migration" phpName="Migration" type="VARCHAR" size="255" required="true"/>
+    <column name="batch" phpName="Batch" type="INTEGER" required="true"/>
+    <vendor type="mysql">
+      <parameter name="Engine" value="InnoDB"/>
+    </vendor>
+  </table>
+  <table name="password_resets" idMethod="native" phpName="PasswordResets">
+    <column name="email" phpName="Email" type="VARCHAR" size="255" required="true"/>
+    <column name="token" phpName="Token" type="VARCHAR" size="255" required="true"/>
+    <column name="created_at" phpName="CreatedAt" type="TIMESTAMP"/>
+    <index name="password_resets_email_index">
+      <index-column name="email"/>
+    </index>
+    <vendor type="mysql">
+      <parameter name="Engine" value="InnoDB"/>
+    </vendor>
+  </table>
+  <table name="users" idMethod="native" phpName="Users">
+    <column name="id" phpName="Id" type="BIGINT" sqlType="bigint(20) unsigned" primaryKey="true" autoIncrement="true" required="true"/>
+    <column name="name" phpName="Name" type="VARCHAR" size="255" required="true"/>
+    <column name="email" phpName="Email" type="VARCHAR" size="255" required="true"/>
+    <column name="email_verified_at" phpName="EmailVerifiedAt" type="TIMESTAMP"/>
+    <column name="password" phpName="Password" type="VARCHAR" size="255" required="true"/>
+    <column name="remember_token" phpName="RememberToken" type="VARCHAR" size="100"/>
+    <column name="created_at" phpName="CreatedAt" type="TIMESTAMP"/>
+    <column name="updated_at" phpName="UpdatedAt" type="TIMESTAMP"/>
+    <column name="role" phpName="Role" type="INTEGER" size="10" sqlType="int(10) unsigned" required="true"/>
+    <unique name="users_email_unique">
+      <unique-column name="email"/>
+    </unique>
+    <vendor type="mysql">
+      <parameter name="Engine" value="InnoDB"/>
+    </vendor>
+  </table>
+</database>
