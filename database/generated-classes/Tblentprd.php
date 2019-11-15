@@ -47,4 +47,52 @@ class Tblentprd extends BaseTblentprd
 
         return $entprd;
     }
+
+    public static function fndallprd(ConnectionInterface $connection = null){
+        $allprd = \TblentprdQuery::create()
+            ->find($connection);
+        $allprd = $allprd->toArray();
+        if(empty($allprd))
+            return false;
+
+        return $allprd;
+    }
+
+    public static function fndqltprd(String $qltfilter ,ConnectionInterface $connection = null){
+        $qltprd = \TblentprdQuery::create()
+            ->filterByIdnentqul($qltfilter)
+            ->find($connection);
+        $qltprd = $qltprd->toArray();
+
+        if(empty($qltprd))
+            return false;
+
+        return $qltprd;
+    }
+
+    public static function fndclsprd(String $clsfilter ,ConnectionInterface $connection = null){
+        $clsprd = \TblentprdQuery::create()
+            ->filterByIdnentcls($clsfilter)
+            ->find($connection);
+        $clsprd = $clsprd->toArray();
+
+        if(empty($clsprd))
+            return false;
+
+        return $clsprd;
+    }
+
+    public static function fndprdbyid(String $id ,ConnectionInterface $connection = null){
+        $uidprd = \TblentprdQuery::create()
+            ->findByUserid($id);
+        $uidprd = $uidprd->toArray();
+
+        if(empty($uidprd))
+            return false;
+
+        return $uidprd;
+    }
+
+
+
 }

@@ -11,13 +11,7 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
-Route::get('/home', function () {
-    return view('welcome');
-});
-Route::get('/myproducts', ['as' => 'myproducts', 'uses' => 'HomeController@getusrprd']);
+Route::get('/', ['as' => 'myproducts', 'uses' => 'HomeController@index']);
+Route::get('/home', ['as' => 'myproducts', 'uses' => 'HomeController@index']);
+Route::get('/myproducts', ['as' => 'myproducts', 'uses' => 'HomeController@getmyprds']);
 Auth::routes();
-
-

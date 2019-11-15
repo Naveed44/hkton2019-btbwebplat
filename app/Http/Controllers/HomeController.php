@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Middleware\Authenticate;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
 {
@@ -13,7 +15,7 @@ class HomeController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth');
+        //$this->middleware('auth');
     }
 
     /**
@@ -23,10 +25,23 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
+        //return view('home');
+        $prds = \Tblentprd::fndallprd();
+        return view('myprds')
+            ->with("products", $prds)
+            ->with("length", count($prds));
     }
 
-    public function getursprd(){
-        
+    public function getmyprds()
+    {
+        if (Auth::guest()) {
+            $prds = \Tblentprd::fndallprd();
+        } else {
+            $usr = Auth::id();
+            $prds = \Tblentprd::fndprdbyid($usr);
+        }
+        return view('myprds')
+            ->with("products", $prds)
+            ->with("length", count($prds));
     }
 }

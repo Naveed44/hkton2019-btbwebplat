@@ -43,4 +43,16 @@ class Users extends BaseUsers
 
         return $entusr;
     }
+
+    public static function fnousreml(String $email, ConnectionInterface $connection = null) {
+        $entusr = \UsersQuery::create()
+            ->filterByEmail($email)
+            ->findOne($connection);
+
+        if(is_null($entusr))
+            return false;
+
+        return $entusr;
+    }
+
 }
