@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\ReturnHandler;
+use App\TransactionHandler;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class HomeController extends Controller
 {
@@ -11,10 +14,6 @@ class HomeController extends Controller
      *
      * @return void
      */
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
 
     /**
      * Show the application dashboard.
@@ -23,10 +22,19 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
+        return view('Marketplace.main');
     }
 
-    public function getursprd(){
-        
+    public function getusrprd(Request $request){
+
+        if(!empty($validador))
+            return ReturnHandler::rtrerrjsn($validador[0]);
+
+        $trncnn = TransactionHandler::begin();
+
+        $usrprd = \TblentprdQuery::fndusrprd(1);
+
+        return view('Marketplace.main')
+            ->with('usrprd', $usrprd);
     }
 }

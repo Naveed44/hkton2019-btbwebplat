@@ -17,7 +17,9 @@ Route::get('/', function () {
 Route::get('/home', function () {
     return view('welcome');
 });
+
 Route::get('/myproducts', ['as' => 'myproducts', 'uses' => 'HomeController@getusrprd']);
+
 Auth::routes();
 
 

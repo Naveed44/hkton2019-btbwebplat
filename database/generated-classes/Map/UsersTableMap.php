@@ -59,7 +59,7 @@ class UsersTableMap extends TableMap
     /**
      * The total number of columns
      */
-    const NUM_COLUMNS = 8;
+    const NUM_COLUMNS = 9;
 
     /**
      * The number of lazy-loaded columns
@@ -69,7 +69,7 @@ class UsersTableMap extends TableMap
     /**
      * The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS)
      */
-    const NUM_HYDRATE_COLUMNS = 8;
+    const NUM_HYDRATE_COLUMNS = 9;
 
     /**
      * the column name for the id field
@@ -112,6 +112,11 @@ class UsersTableMap extends TableMap
     const COL_UPDATED_AT = 'users.updated_at';
 
     /**
+     * the column name for the role field
+     */
+    const COL_ROLE = 'users.role';
+
+    /**
      * The default string format for model objects of the related table
      */
     const DEFAULT_STRING_FORMAT = 'YAML';
@@ -123,11 +128,11 @@ class UsersTableMap extends TableMap
      * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        self::TYPE_PHPNAME       => array('Id', 'Name', 'Email', 'EmailVerifiedAt', 'Password', 'RememberToken', 'CreatedAt', 'UpdatedAt', ),
-        self::TYPE_CAMELNAME     => array('id', 'name', 'email', 'emailVerifiedAt', 'password', 'rememberToken', 'createdAt', 'updatedAt', ),
-        self::TYPE_COLNAME       => array(UsersTableMap::COL_ID, UsersTableMap::COL_NAME, UsersTableMap::COL_EMAIL, UsersTableMap::COL_EMAIL_VERIFIED_AT, UsersTableMap::COL_PASSWORD, UsersTableMap::COL_REMEMBER_TOKEN, UsersTableMap::COL_CREATED_AT, UsersTableMap::COL_UPDATED_AT, ),
-        self::TYPE_FIELDNAME     => array('id', 'name', 'email', 'email_verified_at', 'password', 'remember_token', 'created_at', 'updated_at', ),
-        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, 7, )
+        self::TYPE_PHPNAME       => array('Id', 'Name', 'Email', 'EmailVerifiedAt', 'Password', 'RememberToken', 'CreatedAt', 'UpdatedAt', 'Role', ),
+        self::TYPE_CAMELNAME     => array('id', 'name', 'email', 'emailVerifiedAt', 'password', 'rememberToken', 'createdAt', 'updatedAt', 'role', ),
+        self::TYPE_COLNAME       => array(UsersTableMap::COL_ID, UsersTableMap::COL_NAME, UsersTableMap::COL_EMAIL, UsersTableMap::COL_EMAIL_VERIFIED_AT, UsersTableMap::COL_PASSWORD, UsersTableMap::COL_REMEMBER_TOKEN, UsersTableMap::COL_CREATED_AT, UsersTableMap::COL_UPDATED_AT, UsersTableMap::COL_ROLE, ),
+        self::TYPE_FIELDNAME     => array('id', 'name', 'email', 'email_verified_at', 'password', 'remember_token', 'created_at', 'updated_at', 'role', ),
+        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, 7, 8, )
     );
 
     /**
@@ -137,11 +142,11 @@ class UsersTableMap extends TableMap
      * e.g. self::$fieldKeys[self::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        self::TYPE_PHPNAME       => array('Id' => 0, 'Name' => 1, 'Email' => 2, 'EmailVerifiedAt' => 3, 'Password' => 4, 'RememberToken' => 5, 'CreatedAt' => 6, 'UpdatedAt' => 7, ),
-        self::TYPE_CAMELNAME     => array('id' => 0, 'name' => 1, 'email' => 2, 'emailVerifiedAt' => 3, 'password' => 4, 'rememberToken' => 5, 'createdAt' => 6, 'updatedAt' => 7, ),
-        self::TYPE_COLNAME       => array(UsersTableMap::COL_ID => 0, UsersTableMap::COL_NAME => 1, UsersTableMap::COL_EMAIL => 2, UsersTableMap::COL_EMAIL_VERIFIED_AT => 3, UsersTableMap::COL_PASSWORD => 4, UsersTableMap::COL_REMEMBER_TOKEN => 5, UsersTableMap::COL_CREATED_AT => 6, UsersTableMap::COL_UPDATED_AT => 7, ),
-        self::TYPE_FIELDNAME     => array('id' => 0, 'name' => 1, 'email' => 2, 'email_verified_at' => 3, 'password' => 4, 'remember_token' => 5, 'created_at' => 6, 'updated_at' => 7, ),
-        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, 7, )
+        self::TYPE_PHPNAME       => array('Id' => 0, 'Name' => 1, 'Email' => 2, 'EmailVerifiedAt' => 3, 'Password' => 4, 'RememberToken' => 5, 'CreatedAt' => 6, 'UpdatedAt' => 7, 'Role' => 8, ),
+        self::TYPE_CAMELNAME     => array('id' => 0, 'name' => 1, 'email' => 2, 'emailVerifiedAt' => 3, 'password' => 4, 'rememberToken' => 5, 'createdAt' => 6, 'updatedAt' => 7, 'role' => 8, ),
+        self::TYPE_COLNAME       => array(UsersTableMap::COL_ID => 0, UsersTableMap::COL_NAME => 1, UsersTableMap::COL_EMAIL => 2, UsersTableMap::COL_EMAIL_VERIFIED_AT => 3, UsersTableMap::COL_PASSWORD => 4, UsersTableMap::COL_REMEMBER_TOKEN => 5, UsersTableMap::COL_CREATED_AT => 6, UsersTableMap::COL_UPDATED_AT => 7, UsersTableMap::COL_ROLE => 8, ),
+        self::TYPE_FIELDNAME     => array('id' => 0, 'name' => 1, 'email' => 2, 'email_verified_at' => 3, 'password' => 4, 'remember_token' => 5, 'created_at' => 6, 'updated_at' => 7, 'role' => 8, ),
+        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, 7, 8, )
     );
 
     /**
@@ -169,6 +174,7 @@ class UsersTableMap extends TableMap
         $this->addColumn('remember_token', 'RememberToken', 'VARCHAR', false, 100, null);
         $this->addColumn('created_at', 'CreatedAt', 'TIMESTAMP', false, null, null);
         $this->addColumn('updated_at', 'UpdatedAt', 'TIMESTAMP', false, null, null);
+        $this->addColumn('role', 'Role', 'INTEGER', true, 10, null);
     } // initialize()
 
     /**
@@ -176,6 +182,13 @@ class UsersTableMap extends TableMap
      */
     public function buildRelations()
     {
+        $this->addRelation('Tblentbid', '\\Tblentbid', RelationMap::ONE_TO_MANY, array (
+  0 =>
+  array (
+    0 => ':usersid',
+    1 => ':id',
+  ),
+), null, null, 'Tblentbids', false);
         $this->addRelation('Tblentprd', '\\Tblentprd', RelationMap::ONE_TO_MANY, array (
   0 =>
   array (
@@ -334,6 +347,7 @@ class UsersTableMap extends TableMap
             $criteria->addSelectColumn(UsersTableMap::COL_REMEMBER_TOKEN);
             $criteria->addSelectColumn(UsersTableMap::COL_CREATED_AT);
             $criteria->addSelectColumn(UsersTableMap::COL_UPDATED_AT);
+            $criteria->addSelectColumn(UsersTableMap::COL_ROLE);
         } else {
             $criteria->addSelectColumn($alias . '.id');
             $criteria->addSelectColumn($alias . '.name');
@@ -343,6 +357,7 @@ class UsersTableMap extends TableMap
             $criteria->addSelectColumn($alias . '.remember_token');
             $criteria->addSelectColumn($alias . '.created_at');
             $criteria->addSelectColumn($alias . '.updated_at');
+            $criteria->addSelectColumn($alias . '.role');
         }
     }
 

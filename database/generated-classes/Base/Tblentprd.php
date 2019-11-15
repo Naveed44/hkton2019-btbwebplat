@@ -8,18 +8,23 @@ use \Catentqul as ChildCatentqul;
 use \CatentqulQuery as ChildCatentqulQuery;
 use \Catentuni as ChildCatentuni;
 use \CatentuniQuery as ChildCatentuniQuery;
+use \Tblentauc as ChildTblentauc;
+use \TblentaucQuery as ChildTblentaucQuery;
+use \Tblentprd as ChildTblentprd;
 use \TblentprdQuery as ChildTblentprdQuery;
 use \Users as ChildUsers;
 use \UsersQuery as ChildUsersQuery;
 use \DateTime;
 use \Exception;
 use \PDO;
+use Map\TblentaucTableMap;
 use Map\TblentprdTableMap;
 use Propel\Runtime\Propel;
 use Propel\Runtime\ActiveQuery\Criteria;
 use Propel\Runtime\ActiveQuery\ModelCriteria;
 use Propel\Runtime\ActiveRecord\ActiveRecordInterface;
 use Propel\Runtime\Collection\Collection;
+use Propel\Runtime\Collection\ObjectCollection;
 use Propel\Runtime\Connection\ConnectionInterface;
 use Propel\Runtime\Exception\BadMethodCallException;
 use Propel\Runtime\Exception\LogicException;
@@ -160,12 +165,24 @@ abstract class Tblentprd implements ActiveRecordInterface
     protected $aUsers;
 
     /**
+     * @var        ObjectCollection|ChildTblentauc[] Collection to store aggregation of ChildTblentauc objects.
+     */
+    protected $collTblentaucs;
+    protected $collTblentaucsPartial;
+
+    /**
      * Flag to prevent endless save loop, if this object is referenced
      * by another object which falls in this transaction.
      *
      * @var boolean
      */
     protected $alreadyInSave = false;
+
+    /**
+     * An array of objects scheduled for deletion.
+     * @var ObjectCollection|ChildTblentauc[]
+     */
+    protected $tblentaucsScheduledForDeletion = null;
 
     /**
      * Initializes internal state of Base\Tblentprd object.
@@ -884,6 +901,8 @@ abstract class Tblentprd implements ActiveRecordInterface
             $this->aCatentqul = null;
             $this->aCatentuni = null;
             $this->aUsers = null;
+            $this->collTblentaucs = null;
+
         } // if (deep)
     }
 
@@ -1029,6 +1048,23 @@ abstract class Tblentprd implements ActiveRecordInterface
                     $affectedRows += $this->doUpdate($con);
                 }
                 $this->resetModified();
+            }
+
+            if ($this->tblentaucsScheduledForDeletion !== null) {
+                if (!$this->tblentaucsScheduledForDeletion->isEmpty()) {
+                    \TblentaucQuery::create()
+                        ->filterByPrimaryKeys($this->tblentaucsScheduledForDeletion->getPrimaryKeys(false))
+                        ->delete($con);
+                    $this->tblentaucsScheduledForDeletion = null;
+                }
+            }
+
+            if ($this->collTblentaucs !== null) {
+                foreach ($this->collTblentaucs as $referrerFK) {
+                    if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
+                        $affectedRows += $referrerFK->save($con);
+                    }
+                }
             }
 
             $this->alreadyInSave = false;
@@ -1335,6 +1371,21 @@ abstract class Tblentprd implements ActiveRecordInterface
 
                 $result[$key] = $this->aUsers->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
             }
+            if (null !== $this->collTblentaucs) {
+
+                switch ($keyType) {
+                    case TableMap::TYPE_CAMELNAME:
+                        $key = 'tblentaucs';
+                        break;
+                    case TableMap::TYPE_FIELDNAME:
+                        $key = 'tblentaucs';
+                        break;
+                    default:
+                        $key = 'Tblentaucs';
+                }
+
+                $result[$key] = $this->collTblentaucs->toArray(null, false, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
+            }
         }
 
         return $result;
@@ -1621,6 +1672,20 @@ abstract class Tblentprd implements ActiveRecordInterface
         $copyObj->setQunentprd($this->getQunentprd());
         $copyObj->setCreatedAt($this->getCreatedAt());
         $copyObj->setUpdatedAt($this->getUpdatedAt());
+
+        if ($deepCopy) {
+            // important: temporarily setNew(false) because this affects the behavior of
+            // the getter/setter methods for fkey referrer objects.
+            $copyObj->setNew(false);
+
+            foreach ($this->getTblentaucs() as $relObj) {
+                if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
+                    $copyObj->addTblentauc($relObj->copy($deepCopy));
+                }
+            }
+
+        } // if ($deepCopy)
+
         if ($makeNew) {
             $copyObj->setNew(true);
             $copyObj->setIdnentprd(NULL); // this is a auto-increment column, so set to default value
@@ -1853,6 +1918,248 @@ abstract class Tblentprd implements ActiveRecordInterface
         return $this->aUsers;
     }
 
+
+    /**
+     * Initializes a collection based on the name of a relation.
+     * Avoids crafting an 'init[$relationName]s' method name
+     * that wouldn't work when StandardEnglishPluralizer is used.
+     *
+     * @param      string $relationName The name of the relation to initialize
+     * @return void
+     */
+    public function initRelation($relationName)
+    {
+        if ('Tblentauc' == $relationName) {
+            $this->initTblentaucs();
+            return;
+        }
+    }
+
+    /**
+     * Clears out the collTblentaucs collection
+     *
+     * This does not modify the database; however, it will remove any associated objects, causing
+     * them to be refetched by subsequent calls to accessor method.
+     *
+     * @return void
+     * @see        addTblentaucs()
+     */
+    public function clearTblentaucs()
+    {
+        $this->collTblentaucs = null; // important to set this to NULL since that means it is uninitialized
+    }
+
+    /**
+     * Reset is the collTblentaucs collection loaded partially.
+     */
+    public function resetPartialTblentaucs($v = true)
+    {
+        $this->collTblentaucsPartial = $v;
+    }
+
+    /**
+     * Initializes the collTblentaucs collection.
+     *
+     * By default this just sets the collTblentaucs collection to an empty array (like clearcollTblentaucs());
+     * however, you may wish to override this method in your stub class to provide setting appropriate
+     * to your application -- for example, setting the initial array to the values stored in database.
+     *
+     * @param      boolean $overrideExisting If set to true, the method call initializes
+     *                                        the collection even if it is not empty
+     *
+     * @return void
+     */
+    public function initTblentaucs($overrideExisting = true)
+    {
+        if (null !== $this->collTblentaucs && !$overrideExisting) {
+            return;
+        }
+
+        $collectionClassName = TblentaucTableMap::getTableMap()->getCollectionClassName();
+
+        $this->collTblentaucs = new $collectionClassName;
+        $this->collTblentaucs->setModel('\Tblentauc');
+    }
+
+    /**
+     * Gets an array of ChildTblentauc objects which contain a foreign key that references this object.
+     *
+     * If the $criteria is not null, it is used to always fetch the results from the database.
+     * Otherwise the results are fetched from the database the first time, then cached.
+     * Next time the same method is called without $criteria, the cached collection is returned.
+     * If this ChildTblentprd is new, it will return
+     * an empty collection or the current collection; the criteria is ignored on a new object.
+     *
+     * @param      Criteria $criteria optional Criteria object to narrow the query
+     * @param      ConnectionInterface $con optional connection object
+     * @return ObjectCollection|ChildTblentauc[] List of ChildTblentauc objects
+     * @throws PropelException
+     */
+    public function getTblentaucs(Criteria $criteria = null, ConnectionInterface $con = null)
+    {
+        $partial = $this->collTblentaucsPartial && !$this->isNew();
+        if (null === $this->collTblentaucs || null !== $criteria  || $partial) {
+            if ($this->isNew() && null === $this->collTblentaucs) {
+                // return empty collection
+                $this->initTblentaucs();
+            } else {
+                $collTblentaucs = ChildTblentaucQuery::create(null, $criteria)
+                    ->filterByTblentprd($this)
+                    ->find($con);
+
+                if (null !== $criteria) {
+                    if (false !== $this->collTblentaucsPartial && count($collTblentaucs)) {
+                        $this->initTblentaucs(false);
+
+                        foreach ($collTblentaucs as $obj) {
+                            if (false == $this->collTblentaucs->contains($obj)) {
+                                $this->collTblentaucs->append($obj);
+                            }
+                        }
+
+                        $this->collTblentaucsPartial = true;
+                    }
+
+                    return $collTblentaucs;
+                }
+
+                if ($partial && $this->collTblentaucs) {
+                    foreach ($this->collTblentaucs as $obj) {
+                        if ($obj->isNew()) {
+                            $collTblentaucs[] = $obj;
+                        }
+                    }
+                }
+
+                $this->collTblentaucs = $collTblentaucs;
+                $this->collTblentaucsPartial = false;
+            }
+        }
+
+        return $this->collTblentaucs;
+    }
+
+    /**
+     * Sets a collection of ChildTblentauc objects related by a one-to-many relationship
+     * to the current object.
+     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
+     * and new objects from the given Propel collection.
+     *
+     * @param      Collection $tblentaucs A Propel collection.
+     * @param      ConnectionInterface $con Optional connection object
+     * @return $this|ChildTblentprd The current object (for fluent API support)
+     */
+    public function setTblentaucs(Collection $tblentaucs, ConnectionInterface $con = null)
+    {
+        /** @var ChildTblentauc[] $tblentaucsToDelete */
+        $tblentaucsToDelete = $this->getTblentaucs(new Criteria(), $con)->diff($tblentaucs);
+
+
+        $this->tblentaucsScheduledForDeletion = $tblentaucsToDelete;
+
+        foreach ($tblentaucsToDelete as $tblentaucRemoved) {
+            $tblentaucRemoved->setTblentprd(null);
+        }
+
+        $this->collTblentaucs = null;
+        foreach ($tblentaucs as $tblentauc) {
+            $this->addTblentauc($tblentauc);
+        }
+
+        $this->collTblentaucs = $tblentaucs;
+        $this->collTblentaucsPartial = false;
+
+        return $this;
+    }
+
+    /**
+     * Returns the number of related Tblentauc objects.
+     *
+     * @param      Criteria $criteria
+     * @param      boolean $distinct
+     * @param      ConnectionInterface $con
+     * @return int             Count of related Tblentauc objects.
+     * @throws PropelException
+     */
+    public function countTblentaucs(Criteria $criteria = null, $distinct = false, ConnectionInterface $con = null)
+    {
+        $partial = $this->collTblentaucsPartial && !$this->isNew();
+        if (null === $this->collTblentaucs || null !== $criteria || $partial) {
+            if ($this->isNew() && null === $this->collTblentaucs) {
+                return 0;
+            }
+
+            if ($partial && !$criteria) {
+                return count($this->getTblentaucs());
+            }
+
+            $query = ChildTblentaucQuery::create(null, $criteria);
+            if ($distinct) {
+                $query->distinct();
+            }
+
+            return $query
+                ->filterByTblentprd($this)
+                ->count($con);
+        }
+
+        return count($this->collTblentaucs);
+    }
+
+    /**
+     * Method called to associate a ChildTblentauc object to this object
+     * through the ChildTblentauc foreign key attribute.
+     *
+     * @param  ChildTblentauc $l ChildTblentauc
+     * @return $this|\Tblentprd The current object (for fluent API support)
+     */
+    public function addTblentauc(ChildTblentauc $l)
+    {
+        if ($this->collTblentaucs === null) {
+            $this->initTblentaucs();
+            $this->collTblentaucsPartial = true;
+        }
+
+        if (!$this->collTblentaucs->contains($l)) {
+            $this->doAddTblentauc($l);
+
+            if ($this->tblentaucsScheduledForDeletion and $this->tblentaucsScheduledForDeletion->contains($l)) {
+                $this->tblentaucsScheduledForDeletion->remove($this->tblentaucsScheduledForDeletion->search($l));
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param ChildTblentauc $tblentauc The ChildTblentauc object to add.
+     */
+    protected function doAddTblentauc(ChildTblentauc $tblentauc)
+    {
+        $this->collTblentaucs[]= $tblentauc;
+        $tblentauc->setTblentprd($this);
+    }
+
+    /**
+     * @param  ChildTblentauc $tblentauc The ChildTblentauc object to remove.
+     * @return $this|ChildTblentprd The current object (for fluent API support)
+     */
+    public function removeTblentauc(ChildTblentauc $tblentauc)
+    {
+        if ($this->getTblentaucs()->contains($tblentauc)) {
+            $pos = $this->collTblentaucs->search($tblentauc);
+            $this->collTblentaucs->remove($pos);
+            if (null === $this->tblentaucsScheduledForDeletion) {
+                $this->tblentaucsScheduledForDeletion = clone $this->collTblentaucs;
+                $this->tblentaucsScheduledForDeletion->clear();
+            }
+            $this->tblentaucsScheduledForDeletion[]= clone $tblentauc;
+            $tblentauc->setTblentprd(null);
+        }
+
+        return $this;
+    }
+
     /**
      * Clears the current object, sets all attributes to their default values and removes
      * outgoing references as well as back-references (from other objects to this one. Results probably in a database
@@ -1900,8 +2207,14 @@ abstract class Tblentprd implements ActiveRecordInterface
     public function clearAllReferences($deep = false)
     {
         if ($deep) {
+            if ($this->collTblentaucs) {
+                foreach ($this->collTblentaucs as $o) {
+                    $o->clearAllReferences($deep);
+                }
+            }
         } // if ($deep)
 
+        $this->collTblentaucs = null;
         $this->aCatentcls = null;
         $this->aCatentqul = null;
         $this->aCatentuni = null;

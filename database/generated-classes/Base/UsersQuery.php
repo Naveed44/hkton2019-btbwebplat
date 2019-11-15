@@ -28,6 +28,7 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildUsersQuery orderByRememberToken($order = Criteria::ASC) Order by the remember_token column
  * @method     ChildUsersQuery orderByCreatedAt($order = Criteria::ASC) Order by the created_at column
  * @method     ChildUsersQuery orderByUpdatedAt($order = Criteria::ASC) Order by the updated_at column
+ * @method     ChildUsersQuery orderByRole($order = Criteria::ASC) Order by the role column
  *
  * @method     ChildUsersQuery groupById() Group by the id column
  * @method     ChildUsersQuery groupByName() Group by the name column
@@ -37,6 +38,7 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildUsersQuery groupByRememberToken() Group by the remember_token column
  * @method     ChildUsersQuery groupByCreatedAt() Group by the created_at column
  * @method     ChildUsersQuery groupByUpdatedAt() Group by the updated_at column
+ * @method     ChildUsersQuery groupByRole() Group by the role column
  *
  * @method     ChildUsersQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
  * @method     ChildUsersQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
@@ -45,6 +47,16 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildUsersQuery leftJoinWith($relation) Adds a LEFT JOIN clause and with to the query
  * @method     ChildUsersQuery rightJoinWith($relation) Adds a RIGHT JOIN clause and with to the query
  * @method     ChildUsersQuery innerJoinWith($relation) Adds a INNER JOIN clause and with to the query
+ *
+ * @method     ChildUsersQuery leftJoinTblentbid($relationAlias = null) Adds a LEFT JOIN clause to the query using the Tblentbid relation
+ * @method     ChildUsersQuery rightJoinTblentbid($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Tblentbid relation
+ * @method     ChildUsersQuery innerJoinTblentbid($relationAlias = null) Adds a INNER JOIN clause to the query using the Tblentbid relation
+ *
+ * @method     ChildUsersQuery joinWithTblentbid($joinType = Criteria::INNER_JOIN) Adds a join clause and with to the query using the Tblentbid relation
+ *
+ * @method     ChildUsersQuery leftJoinWithTblentbid() Adds a LEFT JOIN clause and with to the query using the Tblentbid relation
+ * @method     ChildUsersQuery rightJoinWithTblentbid() Adds a RIGHT JOIN clause and with to the query using the Tblentbid relation
+ * @method     ChildUsersQuery innerJoinWithTblentbid() Adds a INNER JOIN clause and with to the query using the Tblentbid relation
  *
  * @method     ChildUsersQuery leftJoinTblentprd($relationAlias = null) Adds a LEFT JOIN clause to the query using the Tblentprd relation
  * @method     ChildUsersQuery rightJoinTblentprd($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Tblentprd relation
@@ -56,7 +68,7 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildUsersQuery rightJoinWithTblentprd() Adds a RIGHT JOIN clause and with to the query using the Tblentprd relation
  * @method     ChildUsersQuery innerJoinWithTblentprd() Adds a INNER JOIN clause and with to the query using the Tblentprd relation
  *
- * @method     \TblentprdQuery endUse() Finalizes a secondary criteria and merges it with its primary Criteria
+ * @method     \TblentbidQuery|\TblentprdQuery endUse() Finalizes a secondary criteria and merges it with its primary Criteria
  *
  * @method     ChildUsers findOne(ConnectionInterface $con = null) Return the first ChildUsers matching the query
  * @method     ChildUsers findOneOrCreate(ConnectionInterface $con = null) Return the first ChildUsers matching the query, or a new ChildUsers object populated from the query conditions when no match is found
@@ -68,7 +80,8 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildUsers findOneByPassword(string $password) Return the first ChildUsers filtered by the password column
  * @method     ChildUsers findOneByRememberToken(string $remember_token) Return the first ChildUsers filtered by the remember_token column
  * @method     ChildUsers findOneByCreatedAt(string $created_at) Return the first ChildUsers filtered by the created_at column
- * @method     ChildUsers findOneByUpdatedAt(string $updated_at) Return the first ChildUsers filtered by the updated_at column *
+ * @method     ChildUsers findOneByUpdatedAt(string $updated_at) Return the first ChildUsers filtered by the updated_at column
+ * @method     ChildUsers findOneByRole(int $role) Return the first ChildUsers filtered by the role column *
 
  * @method     ChildUsers requirePk($key, ConnectionInterface $con = null) Return the ChildUsers by primary key and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildUsers requireOne(ConnectionInterface $con = null) Return the first ChildUsers matching the query and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
@@ -81,6 +94,7 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildUsers requireOneByRememberToken(string $remember_token) Return the first ChildUsers filtered by the remember_token column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildUsers requireOneByCreatedAt(string $created_at) Return the first ChildUsers filtered by the created_at column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildUsers requireOneByUpdatedAt(string $updated_at) Return the first ChildUsers filtered by the updated_at column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildUsers requireOneByRole(int $role) Return the first ChildUsers filtered by the role column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  *
  * @method     ChildUsers[]|ObjectCollection find(ConnectionInterface $con = null) Return ChildUsers objects based on current ModelCriteria
  * @method     ChildUsers[]|ObjectCollection findById(string $id) Return ChildUsers objects filtered by the id column
@@ -91,6 +105,7 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildUsers[]|ObjectCollection findByRememberToken(string $remember_token) Return ChildUsers objects filtered by the remember_token column
  * @method     ChildUsers[]|ObjectCollection findByCreatedAt(string $created_at) Return ChildUsers objects filtered by the created_at column
  * @method     ChildUsers[]|ObjectCollection findByUpdatedAt(string $updated_at) Return ChildUsers objects filtered by the updated_at column
+ * @method     ChildUsers[]|ObjectCollection findByRole(int $role) Return ChildUsers objects filtered by the role column
  * @method     ChildUsers[]|\Propel\Runtime\Util\PropelModelPager paginate($page = 1, $maxPerPage = 10, ConnectionInterface $con = null) Issue a SELECT query based on the current ModelCriteria and uses a page and a maximum number of results per page to compute an offset and a limit
  *
  */
@@ -189,7 +204,7 @@ abstract class UsersQuery extends ModelCriteria
      */
     protected function findPkSimple($key, ConnectionInterface $con)
     {
-        $sql = 'SELECT id, name, email, email_verified_at, password, remember_token, created_at, updated_at FROM users WHERE id = :p0';
+        $sql = 'SELECT id, name, email, email_verified_at, password, remember_token, created_at, updated_at, role FROM users WHERE id = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -547,6 +562,120 @@ abstract class UsersQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(UsersTableMap::COL_UPDATED_AT, $updatedAt, $comparison);
+    }
+
+    /**
+     * Filter the query on the role column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByRole(1234); // WHERE role = 1234
+     * $query->filterByRole(array(12, 34)); // WHERE role IN (12, 34)
+     * $query->filterByRole(array('min' => 12)); // WHERE role > 12
+     * </code>
+     *
+     * @param     mixed $role The value to use as filter.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return $this|ChildUsersQuery The current query, for fluid interface
+     */
+    public function filterByRole($role = null, $comparison = null)
+    {
+        if (is_array($role)) {
+            $useMinMax = false;
+            if (isset($role['min'])) {
+                $this->addUsingAlias(UsersTableMap::COL_ROLE, $role['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($role['max'])) {
+                $this->addUsingAlias(UsersTableMap::COL_ROLE, $role['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(UsersTableMap::COL_ROLE, $role, $comparison);
+    }
+
+    /**
+     * Filter the query by a related \Tblentbid object
+     *
+     * @param \Tblentbid|ObjectCollection $tblentbid the related object to use as filter
+     * @param string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return ChildUsersQuery The current query, for fluid interface
+     */
+    public function filterByTblentbid($tblentbid, $comparison = null)
+    {
+        if ($tblentbid instanceof \Tblentbid) {
+            return $this
+                ->addUsingAlias(UsersTableMap::COL_ID, $tblentbid->getUsersid(), $comparison);
+        } elseif ($tblentbid instanceof ObjectCollection) {
+            return $this
+                ->useTblentbidQuery()
+                ->filterByPrimaryKeys($tblentbid->getPrimaryKeys())
+                ->endUse();
+        } else {
+            throw new PropelException('filterByTblentbid() only accepts arguments of type \Tblentbid or Collection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the Tblentbid relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return $this|ChildUsersQuery The current query, for fluid interface
+     */
+    public function joinTblentbid($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('Tblentbid');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'Tblentbid');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the Tblentbid relation Tblentbid object
+     *
+     * @see useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return \TblentbidQuery A secondary query class using the current class as primary query
+     */
+    public function useTblentbidQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        return $this
+            ->joinTblentbid($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'Tblentbid', '\TblentbidQuery');
     }
 
     /**

@@ -14,7 +14,7 @@
                                     $10
                                 </span>
                         <small class="text-muted">Category</small>
-                        <a href="#" class="product-name"> Product</a>
+                        <a href="#" class="product-name">Product</a>
 
 
 

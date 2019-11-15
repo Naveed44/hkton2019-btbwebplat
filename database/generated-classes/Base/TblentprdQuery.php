@@ -90,7 +90,17 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildTblentprdQuery rightJoinWithUsers() Adds a RIGHT JOIN clause and with to the query using the Users relation
  * @method     ChildTblentprdQuery innerJoinWithUsers() Adds a INNER JOIN clause and with to the query using the Users relation
  *
- * @method     \CatentclsQuery|\CatentqulQuery|\CatentuniQuery|\UsersQuery endUse() Finalizes a secondary criteria and merges it with its primary Criteria
+ * @method     ChildTblentprdQuery leftJoinTblentauc($relationAlias = null) Adds a LEFT JOIN clause to the query using the Tblentauc relation
+ * @method     ChildTblentprdQuery rightJoinTblentauc($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Tblentauc relation
+ * @method     ChildTblentprdQuery innerJoinTblentauc($relationAlias = null) Adds a INNER JOIN clause to the query using the Tblentauc relation
+ *
+ * @method     ChildTblentprdQuery joinWithTblentauc($joinType = Criteria::INNER_JOIN) Adds a join clause and with to the query using the Tblentauc relation
+ *
+ * @method     ChildTblentprdQuery leftJoinWithTblentauc() Adds a LEFT JOIN clause and with to the query using the Tblentauc relation
+ * @method     ChildTblentprdQuery rightJoinWithTblentauc() Adds a RIGHT JOIN clause and with to the query using the Tblentauc relation
+ * @method     ChildTblentprdQuery innerJoinWithTblentauc() Adds a INNER JOIN clause and with to the query using the Tblentauc relation
+ *
+ * @method     \CatentclsQuery|\CatentqulQuery|\CatentuniQuery|\UsersQuery|\TblentaucQuery endUse() Finalizes a secondary criteria and merges it with its primary Criteria
  *
  * @method     ChildTblentprd findOne(ConnectionInterface $con = null) Return the first ChildTblentprd matching the query
  * @method     ChildTblentprd findOneOrCreate(ConnectionInterface $con = null) Return the first ChildTblentprd matching the query, or a new ChildTblentprd object populated from the query conditions when no match is found
@@ -1015,6 +1025,79 @@ abstract class TblentprdQuery extends ModelCriteria
         return $this
             ->joinUsers($relationAlias, $joinType)
             ->useQuery($relationAlias ? $relationAlias : 'Users', '\UsersQuery');
+    }
+
+    /**
+     * Filter the query by a related \Tblentauc object
+     *
+     * @param \Tblentauc|ObjectCollection $tblentauc the related object to use as filter
+     * @param string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return ChildTblentprdQuery The current query, for fluid interface
+     */
+    public function filterByTblentauc($tblentauc, $comparison = null)
+    {
+        if ($tblentauc instanceof \Tblentauc) {
+            return $this
+                ->addUsingAlias(TblentprdTableMap::COL_IDNENTPRD, $tblentauc->getIdnentprd(), $comparison);
+        } elseif ($tblentauc instanceof ObjectCollection) {
+            return $this
+                ->useTblentaucQuery()
+                ->filterByPrimaryKeys($tblentauc->getPrimaryKeys())
+                ->endUse();
+        } else {
+            throw new PropelException('filterByTblentauc() only accepts arguments of type \Tblentauc or Collection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the Tblentauc relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return $this|ChildTblentprdQuery The current query, for fluid interface
+     */
+    public function joinTblentauc($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('Tblentauc');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'Tblentauc');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the Tblentauc relation Tblentauc object
+     *
+     * @see useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return \TblentaucQuery A secondary query class using the current class as primary query
+     */
+    public function useTblentaucQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        return $this
+            ->joinTblentauc($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'Tblentauc', '\TblentaucQuery');
     }
 
     /**
