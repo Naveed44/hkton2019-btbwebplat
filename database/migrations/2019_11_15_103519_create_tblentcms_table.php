@@ -16,7 +16,7 @@ class CreateTblentcmsTable extends Migration
         Schema::create('tblentcms', function (Blueprint $table) {
             $table->bigIncrements('idnentcms');
             $table->unsignedBigInteger('idnentctr');
-            $table->foreign('idnentctr')->references('idnentctr')->on('idnentctr');
+            $table->foreign('idnentctr')->references('idnentctr')->on('tblentctr');
             $table->decimal('ttlentcms');
             $table->timestamp('datsndinv')->nullable();
             $table->timestamp('datpaycms')->nullable();
