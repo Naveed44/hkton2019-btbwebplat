@@ -38,6 +38,30 @@ class Tblentauc extends BaseTblentauc
         return $actauc;
     }
 
+    public static function fndtxtauc(String $txt, ConnectionInterface $connection = null) {
+        $timestamp = date(DATE_ISO8601);
+        $actauc = \TblentaucQuery::create()
+            //->filterByDatendauc($timestamp, \Propel\Runtime\ActiveQuery\Criteria::GREATER_EQUAL)
+            ->useTblentprdQuery()
+                ->filterByNamentprd($txt)
+                ->withColumn('Qunentprd', 'Qunentprd')
+                ->withColumn('Namentprd', 'Namentprd')
+                ->withColumn('Dscentprd', 'Dscentprd')
+                ->useCatentclsQuery()
+                    ->withColumn('Dscentcls', 'Dscentcls')
+                ->endUse()
+                ->useCatentuniQuery()
+                    ->withColumn('Dscentuni', 'Dscentuni')
+                ->endUse()
+                ->useCatentqulQuery()
+                    ->withColumn('Dscentqul', 'Dscentqul')
+                ->endUse()
+            ->endUse()
+            ->find($connection);
+
+        return $actauc;
+    }
+
     public static function fnocveauc(int $cveauc) {
         $entauc = \TblentaucQuery::create()->useTblentprdQuery()
             ->withColumn('Idnentauc', 'Idnentauc')

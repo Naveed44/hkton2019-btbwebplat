@@ -21,6 +21,12 @@ class AuctionsController extends Controller
             ->with('actauc', $opnauc->toArray());
     }
 
+    public function filtrar($txt) {
+        $opnauc = \Tblentauc::fndtxtauc($txt);
+        return view('Auctions.main')
+            ->with('actauc', $opnauc->toArray());
+    }
+
     public function modal($cve) {
         $modauc = \Tblentauc::fnocveauc($cve);
 

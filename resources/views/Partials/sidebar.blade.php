@@ -26,7 +26,7 @@
                 </a>
             </li>
             <li class="">
-                <a href="">
+                <a href="{{ route('contracts') }}">
                     <i class="fa fa-edit"></i>
                     <span class="nav-label">Contratos</span>
                 </a>

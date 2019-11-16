@@ -11,7 +11,7 @@
                             </div>
                         </div>
                         <span class="input-group-btn">
-                            <button type="button" class="btn btn-primary" onclick="">
+                            <button type="button" class="btn btn-primary" onclick="filtrar()">
                                 <i class="fa fa-search"></i>
                             </button>
                         </span>
@@ -33,3 +33,9 @@
         </div>
     </nav>
 </div>
+<script>
+    function filtrar() {
+        if($("#Search").val() !== "")
+            $(location).attr('href', 'http://127.0.0.1:8000/auctions/filtrar/' + $("#Search").val());
+    }
+</script>
