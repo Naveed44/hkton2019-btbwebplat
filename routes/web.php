@@ -14,4 +14,11 @@
 Route::get('/', ['as' => 'myproducts', 'uses' => 'HomeController@index']);
 Route::get('/home', ['as' => 'myproducts', 'uses' => 'HomeController@index']);
 Route::get('/myproducts', ['as' => 'myproducts', 'uses' => 'HomeController@getmyprds']);
+Route::get('/auctions', ['as' => 'auctions', 'uses' => 'AuctionsController@index']);
+
+Route::group(['prefix' => 'auctions'], function() {
+    Route::get('/', ['as' => 'auctions', 'uses' => 'AuctionsController@index']);
+    Route::get('/modal/{id}', ['as' => 'auctions.modal', 'uses' => 'AuctionsController@modal']);
+    Route::post('/bid', ['as' => 'auctions.bid', 'uses' => 'AuctionsController@bid']);
+});
 Auth::routes();

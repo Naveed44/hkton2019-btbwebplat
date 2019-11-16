@@ -9,7 +9,6 @@
             @foreach($usrprd as $prd)
             <div class="ibox">
                 <div class="ibox-content product-box">
-
                     <div class="product-imitation">
                         <img src="https://via.placeholder.com/150" alt="placeholder">
                     </div>

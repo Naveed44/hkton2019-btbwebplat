@@ -14,5 +14,40 @@ use Base\Tblentbid as BaseTblentbid;
  */
 class Tblentbid extends BaseTblentbid
 {
+    public static function fndaucbid(int $cveauc) {
+        $bidauc = \TblentbidQuery::create()
+            ->useUsersQuery()
+                ->withColumn('Name', 'Name')
+            ->endUse()
+            ->filterByIdnentauc($cveauc)
+            ->find();
 
+        return $bidauc;
+    }
+
+    public static function insentbid($ppini, $quant, $auct, $userid) {
+        $entbid = new \Tblentbid();
+        try{
+            $entbid
+                ->setUsersid($userid)
+                ->setIdnentauc($auct)
+                ->setDatissbid(date(DATE_ISO8601))
+                ->setPrcunibid($ppini)
+                ->setQununibid($quant)
+                ->save();
+        }catch(\Propel\Runtime\Exception\PropelException $e) {
+            Log::debug($e);
+            return false;
+        };
+
+        return $entbid;
+    }
+
+    public static function fnddplbid($userid, $cveauc) {
+        $entbid = \TblentbidQuery::create()
+            ->filterByIdnentauc($cveauc)
+            ->filterByUsersid($userid)
+            ->count();
+        return $entbid;
+    }
 }
