@@ -10,7 +10,7 @@
                     </div>
                     <div class="ibox-content">
                         <div class="ibox-content">
-                            <form action="{{ route('regnewprd') }}" method="POST">
+                            <form method="POST" id="regnewprd">
                                 <div class="form-group row">
                                     <label for="name" class="col-md-4 col-form-label text-md-right">Nombre del producto:</label>
 
@@ -102,26 +102,45 @@
                                     </div>
                                 </div>
                                 @csrf
-                                <div class="form-group row mb-0">
-                                    <div class="col-md-6 offset-md-4">
-                                        <button type="submit" class="btn btn-primary">
-                                            Registrar producto
-                                        </button>
-                                    </div>
-                                </div>
                             </form>
+                            <div class="form-group row mb-0">
+                                <div class="col-md-6 offset-md-4">
+                                    <button class="btn btn-primary" onclick="sendregprdform()">
+                                        Registrar producto
+                                    </button>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-@endsection
-
-@section('scripts')
     <script>
         $(document).ready(function() {
             $('.chosen-select').chosen({width: "100%"});
         });
+
+        function sendregprdform() {
+            $('#regnewprd').form('submit', {
+                url: '{{ route('regnewprd') }}',
+                onSubmit: function () {
+                    return $(this).form('validate');
+                },
+                success: function (result) {
+                    var result = eval('(' + result + ')');
+                    if(result.success){
+                        //alertaSuccess('Correcto', result.message);
+                        console.log("!");
+                    }else{
+                        //alertaError('Error', result.message);
+                        console.log("-");
+                    }
+                }
+            });
+        }
     </script>
+@endsection
+
+@section('scripts')
 @endsection
