@@ -2,7 +2,7 @@
     <nav class="navbar navbar-fixed-top" role="navigation" style="margin-bottom: 0">
         <div class="navbar-header">
             <div class="row">
-                <a href="" class="col-sm-3 m-t-sm m-l-md"><img src="logo.png" style="max-height: 60px" class=" m-l-md"></a>
+                <a href="/" class="col-sm-3 m-t-sm m-l-md"><img src="logo.png" style="max-height: 60px" class=" m-l-md"></a>
                 <form class="col-sm-6  m-t-sm m-b-sm" role="search" id="search">
                     <div class="input-group">
                         <div class="form-group ">

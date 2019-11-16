@@ -24,8 +24,13 @@ class TestH008 extends TestCase
     public function test_find_products_by_userid()
     {
         $transc = TransactionHandler::begin();
-        $prds = \Tblentprd::fndprdbyid("1",$transc);
-        self::assertNotFalse($prds);
-        print_r($prds);
+        $prds = \Tblentprd::fndprdbyuserid("2",$transc);
+        if($prds==false || is_null($prds)) {
+            self::assertFalse(false);
+        }else{
+            print_r($prds);
+            self::assertNotFalse($prds);
+        }
+
     }
 }

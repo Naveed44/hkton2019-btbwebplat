@@ -17,13 +17,14 @@ use Propel\Runtime\Exception\PropelException;
  */
 class Tblentprd extends BaseTblentprd
 {
-    public static function insentprd(int $idnentcls, int $idnentqul, int $idnentuni, String $name, String $quantity, String $desc, String $timestamp, ConnectionInterface $connection = null) {
+    public static function insentprd(int $idnentcls, int $idnentqul, int $idnentuni, int $userid, String $name, String $quantity, String $desc, String $timestamp, ConnectionInterface $connection = null) {
         $entprd = new \Tblentprd();
         try {
             $entprd
                 ->setIdnentcls($idnentcls)
                 ->setIdnentqul($idnentqul)
                 ->setIdnentuni($idnentuni)
+                ->setUserid($userid)
                 ->setNamentprd($name)
                 ->setQunentprd($quantity)
                 ->setDscentprd($desc)
@@ -82,17 +83,26 @@ class Tblentprd extends BaseTblentprd
         return $clsprd;
     }
 
-    public static function fndprdbyid(String $id ,ConnectionInterface $connection = null){
+    public static function fndprdbyuserid(String $id ,ConnectionInterface $connection = null){
         $uidprd = \TblentprdQuery::create()
             ->findByUserid($id);
         $uidprd = $uidprd->toArray();
 
-        if(empty($uidprd))
+        if(empty($uidprd)||is_null($uidprd))
             return false;
 
         return $uidprd;
     }
 
+    public static function fnoprdbyid($id){
+        $idprd = \TblentprdQuery::create()
+            ->findOneByIdnentprd($id);
+        $idprd = $idprd->toArray();
 
+        if(empty($idprd)||is_null($idprd))
+            return false;
+
+        return $idprd;
+    }
 
 }
