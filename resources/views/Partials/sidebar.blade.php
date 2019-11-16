@@ -3,14 +3,8 @@
         <ul class="nav metismenu" id="side-menu">
             <li class="nav-header">
                 <div class="form-group">
-                    <label class="text-white">Usuarios:</label>
-                    <div>
-                        <select name="User" id="User" class="chosen-select">
-                            <option value="1">Cooperativa Unión Campesina</option>
-                            <option value="2">La Costeña</option>
-                            <option value="3">Magnimus Software</option>
-                        </select>
-                    </div>
+                    <br>
+                    <br>
                 </div>
             </li>
             <li class="">
@@ -26,15 +20,9 @@
                 </a>
             </li>
             <li class="">
-                <a href="">
+                <a href="{{ route('auctions') }}">
                     <i class="fa fa-sitemap"></i>
                     <span class="nav-label">Subastas</span>
-                </a>
-            </li>
-            <li class="">
-                <a href="">
-                    <i class="fa fa-money"></i>
-                    <span class="nav-label">Propuestas</span>
                 </a>
             </li>
             <li class="">

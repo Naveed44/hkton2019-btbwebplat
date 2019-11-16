@@ -17,4 +17,11 @@ Route::get('/myproducts', ['as' => 'myproducts', 'uses' => 'HomeController@getmy
 Route::get('/product/{id}', ['as' => 'watchprd', 'uses' => 'HomeController@watchprd']);
 Route::get('/newproduct', ['as' => 'newproduct', 'uses' => 'HomeController@newproductview']);
 Route::post('/regproduct', ['as' => 'regnewprd', 'uses' => 'HomeController@newproduct']);
+Route::get('/auctions', ['as' => 'auctions', 'uses' => 'AuctionsController@index']);
+
+Route::group(['prefix' => 'auctions'], function() {
+    Route::get('/', ['as' => 'auctions', 'uses' => 'AuctionsController@index']);
+    Route::get('/modal/{id}', ['as' => 'auctions.modal', 'uses' => 'AuctionsController@modal']);
+    Route::post('/bid', ['as' => 'auctions.bid', 'uses' => 'AuctionsController@bid']);
+});
 Auth::routes();
